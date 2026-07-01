@@ -24,3 +24,9 @@ Thumbs.db
 
 # Coverage
 coverage/
+
+# Databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal

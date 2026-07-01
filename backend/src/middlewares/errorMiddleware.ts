@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import { logger } from '../utils/logger.js';
 
 export function errorHandler(
   err: unknown,
@@ -6,7 +7,7 @@ export function errorHandler(
   res: Response,
   _next: NextFunction,
 ): void {
-  console.error(err);
+  logger.error(err);
 
   res.status(500).json({
     success: false,

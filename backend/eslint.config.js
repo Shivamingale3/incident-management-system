@@ -67,7 +67,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
 
       // --- Console ---
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-console': 'error',
     },
   },
 

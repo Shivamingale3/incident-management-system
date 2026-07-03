@@ -12,10 +12,7 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-export const healthRouter = Router();
+const healthRouter = Router();
 
 healthRouter.get('/', (_req, res) => {
   res.json({
@@ -8,3 +8,4 @@ healthRouter.get('/', (_req, res) => {
     message: 'Server is healthy',
   });
 });
+export default healthRouter;

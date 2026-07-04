@@ -11,3 +11,19 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model Incident {
+  id             String   @id @default(ulid())
+  incidentId     String
+  title          String
+  description    String?
+  service        String?
+  severity       String   @default("LOW")
+  status         String   @default("OPEN")
+  assignee       String?
+  summary        String?
+  recommendation String?
+  rootCause      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

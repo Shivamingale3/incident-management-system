@@ -8,4 +8,5 @@ export type Incident = {
   status: string;
   assignee: string;
   createdAt: string;
+  updatedAt: string;
 };

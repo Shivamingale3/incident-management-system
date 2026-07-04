@@ -3,8 +3,8 @@ import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import { errorHandler } from './middlewares/errorMiddleware.js';
-import { notFoundHandler } from './middlewares/notFoundMiddleware.js';
+import { errorHandler } from './middlewares/error.middleware.js';
+import { notFoundHandler } from './middlewares/notFound.middleware.js';
 import { router } from './routes/index.routes.js';
 import { morganStream } from './utils/logger.js';
 

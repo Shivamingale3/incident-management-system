@@ -129,7 +129,7 @@ function ToastItem({
           setExiting(true)
           setTimeout(() => onDismiss(toast.id), 300)
         }}
-        className="shrink-0 rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        className="shrink-0 rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
       >
         <XIcon className="size-4" />
       </button>

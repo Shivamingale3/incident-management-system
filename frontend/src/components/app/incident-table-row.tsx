@@ -6,6 +6,7 @@ import type {
 import { TableCell, TableRow } from "../ui/table";
 import { SeverityBadge } from "./severity-badge";
 import { StatusBadge } from "./status-badge";
+import { formatIncidentCreatedAtToLocale } from "@/utils/dateUtils";
 
 const IncidentTableRow = ({
   incident,
@@ -15,7 +16,10 @@ const IncidentTableRow = ({
   onSelect: (incident: Incident) => void;
 }) => {
   return (
-    <TableRow className="cursor-pointer" onClick={() => onSelect(incident)}>
+    <TableRow
+      className="cursor-pointer"
+      onClick={() => onSelect(incident)}
+    >
       <TableCell>{incident.id}</TableCell>
       <TableCell>{incident.title}</TableCell>
       <TableCell>{incident.service}</TableCell>
@@ -26,7 +30,9 @@ const IncidentTableRow = ({
         <StatusBadge status={incident.status as IncidentStatusType} />
       </TableCell>
       <TableCell>{incident.assignee}</TableCell>
-      <TableCell>{incident.createdAt}</TableCell>
+      <TableCell>
+        {formatIncidentCreatedAtToLocale(incident.createdAt)}
+      </TableCell>
     </TableRow>
   );
 };

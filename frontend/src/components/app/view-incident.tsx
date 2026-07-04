@@ -1,6 +1,5 @@
-import { useMemo } from "react";
 import { Badge } from "../ui/badge";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardHeader, CardTitle } from "../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,11 +8,6 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import type { Incident } from "@/types/incidents.types";
-
-function sanitizeHtml(html: string): string {
-  return html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
-}
 
 const ViewIncident = ({
   incident,
@@ -24,11 +18,6 @@ const ViewIncident = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const cleanDescription = useMemo(
-    () => sanitizeHtml(incident.description),
-    [incident.description]
-  );
-
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="min-w-7xl max-h-[95vh]">
@@ -49,16 +38,8 @@ const ViewIncident = ({
         <div className="max-h-[70vh] overflow-y-auto">
           <Card>
             <CardHeader>
-              <CardTitle> Description:</CardTitle>
+              <CardTitle>Description:</CardTitle>
             </CardHeader>
-            <CardDescription className="px-5">
-              <div
-                className="w-full prose dark:prose-invert"
-                dangerouslySetInnerHTML={{
-                  __html: cleanDescription,
-                }}
-              />
-            </CardDescription>
           </Card>
         </div>
       </DialogContent>

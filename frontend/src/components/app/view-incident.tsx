@@ -1,5 +1,4 @@
 import { formatIncidentCreatedAtToLocale } from "@/utils/dateUtils";
-import { Badge } from "../ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -23,17 +22,11 @@ const ViewIncident = ({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="min-w-7xl max-h-[95vh]">
         <DialogHeader>
-          <DialogTitle className="text-sm text-primary font-semibold">
-            {incident.id}
+          <DialogTitle className="text-xl font-semibold">
+            {incident.title}
           </DialogTitle>
-          <DialogDescription className="flex flex-col gap-2">
-            <p className="text-xl text-primary-foreground font-bold">
-              {incident.title}
-            </p>
-            <div className="flex items-center gap-2">
-              <Badge>{incident.severity}</Badge>
-              <Badge>{incident.status}</Badge>
-            </div>
+          <DialogDescription className="text-sm font-semibold text-primary">
+            {incident.id}
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-[70vh] overflow-y-auto">

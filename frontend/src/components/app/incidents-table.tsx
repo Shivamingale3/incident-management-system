@@ -6,9 +6,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
-import { incidents } from "@/constants/tavleData";
 import IncidentTableRow from "./incident-table-row";
 import type { Incident } from "@/types/incidents.types";
+import { incidents } from "@/constants/sampleData";
 
 const IncidentsTable = ({
   onSelectIncident,
@@ -16,7 +16,7 @@ const IncidentsTable = ({
   onSelectIncident: (incident: Incident) => void;
 }) => {
   return (
-    <Card className="p-0! w-full flex-1 min-h-0 overflow-hidden">
+    <Card className="p-0! w-full flex-1 min-h-0">
       <Table className="[&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-card text-base">
         <TableHeader>
           <TableRow>

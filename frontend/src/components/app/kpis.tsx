@@ -1,4 +1,4 @@
-import KPIcard from "./kpiCard";
+import KPIcard from "./kpi-card";
 
 const Kpis = () => {
   const stats = [
@@ -24,7 +24,7 @@ const Kpis = () => {
     },
   ];
   return (
-    <section className="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <section className="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 shrink-0">
       {stats.map((stat) => (
         <KPIcard
           key={stat.title}

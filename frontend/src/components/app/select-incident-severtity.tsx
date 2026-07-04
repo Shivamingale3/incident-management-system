@@ -6,39 +6,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { IncidentSeverity } from "@/constants/incidentSererity.constants";
-import { cn } from "@/lib/utils";
 import type { IncidentSeverityType } from "@/types/incidents.types";
 import { SeverityBadge } from "./severity-badge";
 
 export const SelectIncidentSeverity = ({
-  value,
-  onValueChange,
-  className,
+  severity,
+  setSeverity,
 }: {
-  value: IncidentSeverityType;
-  onValueChange: (value: IncidentSeverityType) => void;
-  className?: string;
+  severity: IncidentSeverityType | null;
+  setSeverity: (severity: IncidentSeverityType | null) => void;
 }) => {
   return (
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger
-        className={cn(
-          "w-full border-border/50 text-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/10",
-          className,
-        )}
-      >
-        <SelectValue>
-          <SeverityBadge severity={value} />
-        </SelectValue>
+    <Select
+      value={severity === null ? "ALL" : severity}
+      onValueChange={(val) =>
+        setSeverity(val === "ALL" ? null : (val as IncidentSeverityType))
+      }
+    >
+      <SelectTrigger className="w-max">
+        <SelectValue placeholder="Severity: All" />
       </SelectTrigger>
-      <SelectContent className="bg-popover shadow-lg">
-        {Object.values(IncidentSeverity).map((severity) => (
-          <SelectItem
-            key={severity}
-            value={severity}
-            className="cursor-pointer data-[state=checked]:bg-primary/10 data-[state=checked]:font-medium"
-          >
-            <SeverityBadge severity={severity} />
+      <SelectContent>
+        <SelectItem value="ALL">Severity: All</SelectItem>
+        {Object.values(IncidentSeverity).map((sev) => (
+          <SelectItem key={sev} value={sev}>
+            <SeverityBadge severity={sev as IncidentSeverityType} />
           </SelectItem>
         ))}
       </SelectContent>

@@ -5,40 +5,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import type { IncidentStatusType } from "@/types/incidents.types";
 import { StatusBadge } from "./status-badge";
 import { IncidentStatus } from "@/constants/incidentStatus.constants";
 
 export const SelectIncidentStatus = ({
-  value,
-  onValueChange,
-  className,
+  status,
+  setStatus,
 }: {
-  value: IncidentStatusType;
-  onValueChange: (value: IncidentStatusType) => void;
-  className?: string;
+  status: IncidentStatusType | null;
+  setStatus: (status: IncidentStatusType | null) => void;
 }) => {
   return (
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger
-        className={cn(
-          "w-full border-border/50 text-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/10",
-          className,
-        )}
-      >
-        <SelectValue>
-          <StatusBadge status={value} />
-        </SelectValue>
+    <Select
+      value={status === null ? "ALL" : status}
+      onValueChange={(val) =>
+        setStatus(val === "ALL" ? null : (val as IncidentStatusType))
+      }
+    >
+      <SelectTrigger className="w-max">
+        <SelectValue placeholder="Status: All" />
       </SelectTrigger>
-      <SelectContent className="bg-popover shadow-lg">
-        {Object.values(IncidentStatus).map((status) => (
-          <SelectItem
-            key={status}
-            value={status}
-            className="cursor-pointer data-[state=checked]:bg-primary/10 data-[state=checked]:font-medium"
-          >
-            <StatusBadge status={value} />
+      <SelectContent>
+        <SelectItem value="ALL">Status: All</SelectItem>
+        {Object.values(IncidentStatus).map((stat) => (
+          <SelectItem key={stat} value={stat}>
+            <StatusBadge status={stat as IncidentStatusType} />
           </SelectItem>
         ))}
       </SelectContent>

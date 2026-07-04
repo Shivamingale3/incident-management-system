@@ -19,6 +19,8 @@ export type Incident = {
   updatedAt: string;
 };
 
+export type IncidentAutoFetchTiming = { label: string; value: number };
+
 export type IncidentSeverityType =
   (typeof IncidentSeverity)[keyof typeof IncidentSeverity];
 

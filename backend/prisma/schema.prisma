@@ -14,7 +14,7 @@ datasource db {
 
 model Incident {
   id             String   @id @default(ulid())
-  incidentId     String
+  incidentId     String   @unique
   title          String
   description    String?
   service        String?

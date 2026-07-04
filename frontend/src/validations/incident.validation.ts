@@ -11,7 +11,6 @@ export const addIncidentValidationSchema = z.object({
     .min(5, "Description is too short, must be at least 5 characters")
     .max(500, "Description is too long, must not exceed 500 characters")
     .nullish(),
-
   service: z
     .string("Service must be a string")
     .min(2, "Service name must be at least 2 characters")

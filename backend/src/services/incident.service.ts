@@ -1,6 +1,5 @@
 import { db } from '../config/db.js';
 import type { AddNewIncidentData, GetIncidentsByFilter } from '../types/incident.types.js';
-import incidentIdGenerator from '../utils/incidentIdGenerator.js';
 import { HttpException } from '../exceptions/http.exception.js';
 import { logger } from '../utils/logger.js';
 import { type Incident, type Prisma } from '@prisma/client';
@@ -13,11 +12,18 @@ export async function createNewIncident(incidentData: AddNewIncidentData): Promi
       throw new HttpException(400, 'Incident title is required');
     }
 
-    const incidentId = incidentIdGenerator();
+    const existingIncidentId = await db.incident.findUnique({
+      where: { incidentId: incidentData.incidentId },
+      select: { id: true },
+    });
+
+    if (existingIncidentId) {
+      throw new HttpException(409, 'Incident with this ID already exists');
+    }
 
     const newIncident = await db.incident.create({
       data: {
-        incidentId,
+        incidentId: incidentData.incidentId,
         title: incidentData.title,
         description: incidentData.description ?? null,
         service: incidentData.service ?? null,

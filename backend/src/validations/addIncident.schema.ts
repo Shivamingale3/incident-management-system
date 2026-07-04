@@ -5,7 +5,10 @@ export const addIncidentValidationSchema = z.object({
     .string('Title is required')
     .min(1, 'Title is too short, must be at least 1 characters')
     .max(100, 'Title is too long, must not exceed 100 characters'),
-
+  incidentId: z
+    .string('Incident ID is missing')
+    .startsWith('INC', 'Invalid Incident ID')
+    .nonoptional(),
   description: z
     .string('Description must be a string')
     .min(5, 'Description is too short, must be at least 5 characters')

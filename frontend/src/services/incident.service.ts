@@ -1,9 +1,16 @@
 import api from "@/lib/axiosInstance";
-import type { AddNewIncident } from "@/types/incidents.types";
+import type { ApiResponse } from "@/types/app.types";
+import type {
+  AddNewIncident,
+  GetIncidentsByFilter,
+} from "@/types/incidents.types";
 
-export const incidentService = {
-  async createIncident(payload: AddNewIncident) {
-    const response = await api.post("/incidents", payload);
-    return response.data;
-  },
-};
+export async function createIncident(payload: AddNewIncident): Promise<void> {
+  await api.post("/incidents", payload);
+}
+
+export async function getIncidentsByFilter(): Promise<GetIncidentsByFilter> {
+  const response =
+    await api.get<ApiResponse<GetIncidentsByFilter>>("/incidents/filter");
+  return response.data.data;
+}

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Badge } from "../ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import {
@@ -9,6 +10,11 @@ import {
 } from "../ui/dialog";
 import type { Incident } from "@/types/incidents.types";
 
+function sanitizeHtml(html: string): string {
+  return html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+}
+
 const ViewIncident = ({
   incident,
   open,
@@ -18,9 +24,14 @@ const ViewIncident = ({
   open: boolean;
   onClose: () => void;
 }) => {
+  const cleanDescription = useMemo(
+    () => sanitizeHtml(incident.description),
+    [incident.description]
+  );
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="min-w-7xl max-h-[95vh]">
         <DialogHeader>
           <DialogTitle className="text-sm text-primary font-semibold">
             {incident.id}
@@ -35,19 +46,21 @@ const ViewIncident = ({
             </div>
           </DialogDescription>
         </DialogHeader>
-        <Card>
-          <CardHeader>
-            <CardTitle> Description:</CardTitle>
-          </CardHeader>
-          <CardDescription className="px-5 overflow-y-auto">
-            <div
-              className="w-full prose dark:prose-invert"
-              dangerouslySetInnerHTML={{
-                __html: incident.description,
-              }}
-            />
-          </CardDescription>
-        </Card>
+        <div className="max-h-[70vh] overflow-y-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle> Description:</CardTitle>
+            </CardHeader>
+            <CardDescription className="px-5">
+              <div
+                className="w-full prose dark:prose-invert"
+                dangerouslySetInnerHTML={{
+                  __html: cleanDescription,
+                }}
+              />
+            </CardDescription>
+          </Card>
+        </div>
       </DialogContent>
     </Dialog>
   );

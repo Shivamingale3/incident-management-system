@@ -8,8 +8,13 @@ import {
 import { Card } from "@/components/ui/card";
 import { incidents } from "@/constants/tavleData";
 import IncidentTableRow from "./incident-table-row";
+import type { Incident } from "@/types/incidents.types";
 
-const IncidentsTable = () => {
+const IncidentsTable = ({
+  onSelectIncident,
+}: {
+  onSelectIncident: (incident: Incident) => void;
+}) => {
   return (
     <Card className="p-0! w-full flex-1 min-h-0 overflow-hidden">
       <Table className="[&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-card text-base">
@@ -26,7 +31,11 @@ const IncidentsTable = () => {
         </TableHeader>
         <TableBody className="bg-background">
           {incidents.map((incident) => (
-            <IncidentTableRow incident={incident} key={incident.id} />
+            <IncidentTableRow
+              incident={incident}
+              key={incident.id}
+              onSelect={onSelectIncident}
+            />
           ))}
         </TableBody>
       </Table>

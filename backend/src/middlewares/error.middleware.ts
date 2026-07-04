@@ -1,4 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
+import { HttpException } from '../exceptions/http.exception.js';
+import { ZodError } from 'zod';
 import { logger } from '../utils/logger.js';
 
 export function errorHandler(
@@ -7,7 +9,37 @@ export function errorHandler(
   res: Response,
   _next: NextFunction,
 ): void {
-  logger.error(err);
+  if (res.headersSent) {
+    _next(err);
+    return;
+  }
+
+  if (err instanceof HttpException) {
+    if (err.statusCode >= 500) {
+      logger.error(err.message);
+    } else {
+      logger.error(err.message);
+    }
+
+    res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+    });
+    return;
+  }
+
+  if (err instanceof ZodError) {
+    const message = err.issues[0]?.message ?? 'Validation failed';
+    logger.error(`Validation error: ${message}`);
+
+    res.status(400).json({
+      success: false,
+      message,
+    });
+    return;
+  }
+
+  logger.error(err instanceof Error ? (err.stack ?? err.message) : String(err));
 
   res.status(500).json({
     success: false,

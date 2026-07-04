@@ -3,8 +3,8 @@ import z from 'zod';
 export const addIncidentValidationSchema = z.object({
   title: z
     .string('Title is required')
-    .min(5, 'Title is too short, must be at least 5 characters')
-    .max(500, 'Title is too long, must not exceed 500 characters'),
+    .min(1, 'Title is too short, must be at least 1 characters')
+    .max(100, 'Title is too long, must not exceed 100 characters'),
 
   description: z
     .string('Description must be a string')
@@ -14,14 +14,22 @@ export const addIncidentValidationSchema = z.object({
 
   service: z
     .string('Service must be a string')
-    .min(2, 'Service name must be at least 2 characters')
+    .min(1, 'Service name must be at least 1 characters')
     .max(100, 'Service name must not exceed 100 characters')
     .nullish(),
 
-  severity: z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], 'Severity is required').optional(),
+  severity: z
+    .enum(
+      ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'],
+      'Severity must be one of the following: LOW, MEDIUM, HIGH, or CRITICAL',
+    )
+    .optional(),
 
   status: z
-    .enum(['OPEN', 'INVESTIGATING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'], 'Status is required')
+    .enum(
+      ['OPEN', 'INVESTIGATING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'],
+      'Status must be one of the following: OPEN, INVESTIGATING, IN_PROGRESS, RESOLVED, CLOSED',
+    )
     .optional(),
 
   assignee: z

@@ -1,14 +1,20 @@
 import type { IncidentSeverity } from "@/constants/incidentSererity.constants";
 import type { IncidentStatus } from "@/constants/incidentStatus.constants";
+import type { addIncidentValidationSchema } from "@/validations/incident.validation";
+import type z from "zod";
 
 export type Incident = {
   id: string;
+  incidentId: string;
   title: string;
-  description: string;
-  service: string;
+  description: string | null;
+  service: string | null;
   severity: IncidentSeverityType;
   status: IncidentStatusType;
-  assignee: string;
+  assignee: string | null;
+  summary: string | null;
+  recommendation: string | null;
+  rootCause: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -28,3 +34,5 @@ export type SeverityBadgeProps = {
   severity: IncidentSeverityType;
   className?: string;
 };
+
+export type AddNewIncident = z.infer<typeof addIncidentValidationSchema>;

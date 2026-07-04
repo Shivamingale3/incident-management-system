@@ -108,55 +108,55 @@
 }
 
 :root {
-  --background: #09090B;
-  --foreground: #FAFAFA;
+  --background: #09090b;
+  --foreground: #fafafa;
 
   --card: #141313;
-  --card-foreground: #FAFAFA;
+  --card-foreground: #fafafa;
 
-  --popover: #1C1B1B;
-  --popover-foreground: #FAFAFA;
+  --popover: #1c1b1b;
+  --popover-foreground: #fafafa;
 
-  --primary: #FAFAFA;
-  --primary-foreground: #18181B;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
 
-  --secondary: #27272A;
-  --secondary-foreground: #FAFAFA;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
 
-  --muted: #27272A;
-  --muted-foreground: #A1A1AA;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
 
-  --accent: #27272A;
-  --accent-foreground: #FAFAFA;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
 
-  --destructive: #EF4444;
-  --destructive-foreground: #FAFAFA;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
 
-  --border: #27272A;
-  --input: #27272A;
-  --ring: #C4C4CB;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #c4c4cb;
 
-  --success: #10B981;
-  --warning: #F59E0B;
-  --medium: #EAB308;
-  --error: #EF4444;
-  --info: #3B82F6;
-  --ai-accent: #FCD34D;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --medium: #eab308;
+  --error: #ef4444;
+  --info: #3b82f6;
+  --ai-accent: #fcd34d;
 
-  --chart-1: #09090B;
+  --chart-1: #09090b;
   --chart-2: #141313;
-  --chart-3: #27272A;
-  --chart-4: #A1A1AA;
-  --chart-5: #FAFAFA;
+  --chart-3: #27272a;
+  --chart-4: #a1a1aa;
+  --chart-5: #fafafa;
 
   --sidebar: #141313;
-  --sidebar-foreground: #FAFAFA;
-  --sidebar-primary: #FAFAFA;
-  --sidebar-primary-foreground: #18181B;
-  --sidebar-accent: #27272A;
-  --sidebar-accent-foreground: #FAFAFA;
-  --sidebar-border: #27272A;
-  --sidebar-ring: #C4C4CB;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #fafafa;
+  --sidebar-primary-foreground: #18181b;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #c4c4cb;
 
   --height-navbar: 56px;
   --width-drawer: 480px;
@@ -223,4 +223,12 @@
   width: 100%;
   background-color: var(--background);
   overflow-y: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }

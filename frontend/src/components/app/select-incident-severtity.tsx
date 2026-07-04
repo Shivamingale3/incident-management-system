@@ -12,22 +12,24 @@ import { SeverityBadge } from "./severity-badge";
 export const SelectIncidentSeverity = ({
   severity,
   setSeverity,
+  includeAll = true,
 }: {
   severity: IncidentSeverityType | null;
   setSeverity: (severity: IncidentSeverityType | null) => void;
+  includeAll?: boolean;
 }) => {
   return (
     <Select
-      value={severity === null ? "ALL" : severity}
+      value={severity ?? (includeAll ? "ALL" : undefined)}
       onValueChange={(val) =>
         setSeverity(val === "ALL" ? null : (val as IncidentSeverityType))
       }
     >
-      <SelectTrigger className="w-max">
-        <SelectValue placeholder="Severity: All" />
+      <SelectTrigger className={includeAll ? "w-max" : "w-full"}>
+        <SelectValue placeholder={includeAll ? "Severity: All" : "Select severity"} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="ALL">Severity: All</SelectItem>
+        {includeAll && <SelectItem value="ALL">Severity: All</SelectItem>}
         {Object.values(IncidentSeverity).map((sev) => (
           <SelectItem key={sev} value={sev}>
             <SeverityBadge severity={sev as IncidentSeverityType} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import CharacterCount from "@tiptap/extension-character-count";
@@ -82,12 +82,14 @@ function RichTextEditor({
   className,
 }: RichTextEditorProps) {
   const isInternalChange = useRef(false);
+  const [charCount, setCharCount] = useState(0);
 
   const handleUpdate = useCallback(
     ({ editor }: { editor: ReturnType<typeof useEditor> }) => {
       if (!editor || isInternalChange.current) return;
       isInternalChange.current = true;
       onChange(editor.getHTML());
+      setCharCount(editor.storage?.characterCount?.characters?.() ?? 0);
       requestAnimationFrame(() => {
         isInternalChange.current = false;
       });
@@ -148,8 +150,7 @@ function RichTextEditor({
     }
   }, [editor, value]);
 
-  const characterCount = editor?.storage?.characterCount?.characters?.() ?? 0;
-  const isAtLimit = maxCharacters != null && characterCount >= maxCharacters;
+  const isAtLimit = maxCharacters != null && charCount >= maxCharacters;
 
   const insertLink = useCallback(() => {
     const previousUrl = editor?.getAttributes("link").href;
@@ -303,8 +304,10 @@ function RichTextEditor({
         </div>
       )}
 
-      <div className={cn("rich-text-content", !readOnly && "p-3")}>
-        <EditorContent editor={editor} className="p-5" />
+      <div
+        className={cn("rich-text-content overflow-x-auto", !readOnly && "p-3")}
+      >
+        <EditorContent editor={editor} className={`${readOnly ? "p-5" : ""}`} />
       </div>
 
       {!readOnly && maxCharacters != null && (
@@ -314,7 +317,7 @@ function RichTextEditor({
             isAtLimit ? "text-error" : "text-muted-foreground",
           )}
         >
-          {characterCount} / {maxCharacters}
+          {charCount} / {maxCharacters}
         </div>
       )}
     </div>

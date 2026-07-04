@@ -1,3 +1,4 @@
+import stripHtml from "@/utils/stripHtml";
 import { z } from "zod";
 
 export const addIncidentValidationSchema = z.object({
@@ -11,25 +12,44 @@ export const addIncidentValidationSchema = z.object({
     .nonoptional(),
   description: z
     .string("Description must be a string")
-    .min(5, "Description is too short, must be at least 5 characters")
-    .max(500, "Description is too long, must not exceed 500 characters")
-    .nullish(),
+    .nullish()
+    .refine(
+      (val) => {
+        if (!val) return true;
+        const textContent = stripHtml(val);
+        return textContent.length === 0 || textContent.length >= 5;
+      },
+      {
+        message:
+          "Description content is too short, must be at least 5 characters",
+      },
+    )
+    .refine(
+      (val) => {
+        if (!val) return true;
+        const textContent = stripHtml(val);
+        return textContent.length <= 500;
+      },
+      {
+        message:
+          "Description content is too long, must not exceed 500 characters",
+      },
+    ),
   service: z
     .string("Service must be a string")
     .min(2, "Service name must be at least 2 characters")
     .max(100, "Service name must not exceed 100 characters")
     .nullish(),
 
-  severity: z
-    .enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], "Severity is required")
-    .optional(),
+  severity: z.enum(
+    ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+    "Severity is required",
+  ),
 
-  status: z
-    .enum(
-      ["OPEN", "INVESTIGATING", "IN_PROGRESS", "RESOLVED", "CLOSED"],
-      "Status is required",
-    )
-    .optional(),
+  status: z.enum(
+    ["OPEN", "INVESTIGATING", "IN_PROGRESS", "RESOLVED", "CLOSED"],
+    "Status is required",
+  ),
 
   assignee: z
     .string("Assignee must be a string")

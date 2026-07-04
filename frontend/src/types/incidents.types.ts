@@ -36,3 +36,11 @@ export type SeverityBadgeProps = {
 };
 
 export type AddNewIncident = z.infer<typeof addIncidentValidationSchema>;
+
+export type GetIncidentsByFilter = {
+  data: Incident[];
+  page: number;
+  totalPages: number;
+  total: number;
+  pageSize: number;
+};

@@ -1,0 +1,37 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: .env
+    environment:
+      # Point Prisma/libsql at the persistent volume (absolute path)
+      DATABASE_URL: "file:/data/dev.db"
+      APP_ENV: production
+    volumes:
+      - db-data:/data
+    expose:
+      - "5000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+
+  frontend:
+    depends_on:
+      backend:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: "/api"
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    restart: unless-stopped
+
+volumes:
+  db-data:

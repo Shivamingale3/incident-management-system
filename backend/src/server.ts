@@ -1,6 +1,6 @@
 import { app } from './app.js';
-import { db } from './config/db.js';
-import { env } from './config/env.js';
+import { db } from './config/db.config.js';
+import { env } from './config/env.config.js';
 import { logger } from './utils/logger.js';
 
 async function startServer(): Promise<void> {

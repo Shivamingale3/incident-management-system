@@ -200,13 +200,15 @@ const CreateNewIncident = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-            <IncidentFormFields
-              incidentId={incidentId}
-              isPending={isPending}
-            />
+            <IncidentFormFields incidentId={incidentId} isPending={isPending} />
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={handleClose} disabled={isPending}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClose}
+                disabled={isPending}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={isPending}>

@@ -8,6 +8,8 @@ const envSchema = z.object({
     })
     .nonoptional(),
   DATABASE_URL: z.string().nonoptional(),
+  GEMINI_API_KEY: z.string().nonoptional('Gemini API key is required'),
+  GEMINI_MODEL: z.string().nonoptional('Model is required'),
 });
 
 export default envSchema;

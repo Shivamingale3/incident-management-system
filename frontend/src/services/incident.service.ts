@@ -5,6 +5,7 @@ import type {
   GetIncidentsByFilter,
   Incident,
   IncidentQueryParams,
+  IncidentSeverityRecommendation,
   IncidentStatusType,
 } from "@/types/incidents.types";
 
@@ -51,5 +52,36 @@ export async function updateIncidentStatus(
 
 export async function getIncidentById(id: string): Promise<Incident> {
   const response = await api.get<ApiResponse<Incident>>(`/incident/${id}`);
+  return response.data.data;
+}
+
+export async function getSuggestedIncidentSeverity({
+  title,
+  description,
+  service,
+}: {
+  title: string;
+  description: string | null;
+  service: string | null;
+}): Promise<IncidentSeverityRecommendation> {
+  const body: {
+    title?: string;
+    description?: string;
+    service?: string;
+  } = {};
+  if (title.trim()) {
+    body.title = title;
+  }
+  if (description?.trim()) {
+    body.description = description;
+  }
+  if (service?.trim()) {
+    body.service = service;
+  }
+
+  const response = await api.post<ApiResponse<IncidentSeverityRecommendation>>(
+    "/ai/incident/suggest-severity",
+    body,
+  );
   return response.data.data;
 }

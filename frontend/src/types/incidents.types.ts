@@ -78,6 +78,15 @@ export type IncidentsTableProps = {
 };
 
 export type IncidentSeverityRecommendation = {
-  recommendedSeverity: IncidentSeverityType;
-  reasons: string[];
+  severity: IncidentSeverityType | "UNKNOWN";
+  reason: string;
+};
+
+export type SuggestedSeverityProps = {
+  recommendation: IncidentSeverityRecommendation | null;
+  error: string | null;
+  isError: boolean;
+  isLoading: boolean;
+  onRetry: () => void;
+  onAccept: (severity: IncidentSeverityType) => void;
 };

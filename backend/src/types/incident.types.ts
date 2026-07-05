@@ -10,3 +10,8 @@ export type IncidentSeverityType = (typeof IncidentSeverity)[keyof typeof Incide
 export type IncidentStatusType = (typeof IncidentStatus)[keyof typeof IncidentStatus];
 
 export type GetIncidentsByFilter = z.infer<typeof getIncidentsByFilterValidationSchema>;
+
+export interface IncidentSeverityRecommendation {
+  severity: IncidentSeverityType;
+  reason: string;
+}

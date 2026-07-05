@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import axios from "axios";
 
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +26,9 @@ import type {
   IncidentStatusType,
 } from "@/types/incidents.types";
 import { Button } from "../ui/button";
+import useGetSuggestedSeverity from "@/hooks/use-get-suggested-severity";
+import SuggestedSeverity from "@/components/app/suggested-severity";
+import { toast } from "sonner";
 
 function IncidentIdBanner({ incidentId }: { incidentId: string }) {
   return (
@@ -40,7 +45,38 @@ export function IncidentFormFields({
   incidentId,
   isPending,
 }: IncidentFormFieldsProps) {
-  const { control } = useFormContext<AddNewIncident>();
+  const { control, setValue, getValues } = useFormContext<AddNewIncident>();
+  const [showSuggestion, setShowSuggestion] = useState(false);
+
+  const title = getValues("title");
+  const description = getValues("description") ?? null;
+  const service = getValues("service") ?? null;
+
+  const {
+    data: recommendation,
+    error: queryError,
+    isFetching,
+    isError,
+    refetch,
+  } = useGetSuggestedSeverity({ title, description, service });
+
+  const handleSuggestClick = () => {
+    if (getValues("title").trim().length > 0) {
+      setShowSuggestion(true);
+      refetch();
+    } else {
+      toast.error("Please enter a title to generate severity");
+    }
+  };
+
+  const handleAccept = (severity: IncidentSeverityType) => {
+    setValue("severity", severity, { shouldValidate: true });
+    setShowSuggestion(false);
+  };
+
+  const handleRetry = () => {
+    refetch();
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -110,6 +146,23 @@ export function IncidentFormFields({
         )}
       />
 
+      {showSuggestion && (
+        <SuggestedSeverity
+          recommendation={isFetching ? null : (recommendation ?? null)}
+          error={
+            !isFetching && isError
+              ? axios.isAxiosError(queryError)
+                ? (queryError.response?.data?.message ?? queryError.message)
+                : "Unknown error"
+              : null
+          }
+          isLoading={isFetching}
+          isError={!isFetching && isError}
+          onRetry={handleRetry}
+          onAccept={handleAccept}
+        />
+      )}
+
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 items-end">
         <FormField
           control={control}
@@ -126,6 +179,11 @@ export function IncidentFormFields({
                   variant="secondary"
                   size="xs"
                   className="h-6 rounded bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary border border-primary/20 transition-colors px-2 text-[10px] sm:text-xs font-semibold"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSuggestClick();
+                  }}
+                  disabled={isPending}
                 >
                   ✨ Suggest Severity
                 </Button>

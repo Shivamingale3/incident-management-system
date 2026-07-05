@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import type { IncidentStatusType } from "@/types/incidents.types";
-import { useUpdateIncidentStatus } from "@/hooks/update-incident-status";
+import { useUpdateIncidentStatus } from "@/hooks/use-update-incident-status";
 import useGetIncidentById from "@/hooks/use-get-incident-by-id";
 import ViewIncidentSkeleton from "./skeletons/view-incident-skeleton";
 import ViewIncident from "./view-incident";

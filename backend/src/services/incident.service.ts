@@ -1,4 +1,4 @@
-import { db } from '../config/db.js';
+import { db } from '../config/db.config.js';
 import type {
   AddNewIncidentData,
   GetIncidentsByFilter,

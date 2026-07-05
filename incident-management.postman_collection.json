@@ -1,0 +1,1254 @@
+{
+	"info": {
+		"_postman_id": "b032b7e4-e03c-48f6-98e6-387398ad36a3",
+		"name": "incident-mgmt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51619614",
+		"_collection_link": "https://shivam-ingale-8176987.postman.co/workspace/Shivam-Ingale's-Workspace~9c16d47e-b534-4e17-823f-d7824988fb2e/collection/51619614-b032b7e4-e03c-48f6-98e6-387398ad36a3?action=share&source=collection_link&creator=51619614"
+	},
+	"item": [
+		{
+			"name": "Add New Incident",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Something went wrong\",\n    \"incidentId\": \"INC-01KWPM4CW5FEK4KP0DE67HWZ00\",\n    \"description\": \"Some thing went wrong because somwthing left unchecked\",\n    \"service\": \"Dashboard\",\n    \"severity\": \"LOW\",\n    \"status\": \"OPEN\",\n    \"assignee\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/incident",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"incident"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Something went wrong\",\n    \"description\": \"\",\n    \"service\": \"\",\n    \"severity\": \"\",\n    \"status\": \"\",\n    \"assignee\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/incident",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "79"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4f-6fK2jXf27FrgMU3Ohn3BKwHUPuo\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 04 Jul 2026 12:56:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Title is too short, must be at least 5 characters\"\n}"
+				},
+				{
+					"name": "201",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Something went wrong\",\n    \"description\": \"Some thing went wrong because somwthing left unchecked\",\n    \"service\": \"Dashboard\",\n    \"severity\": \"LOW\",\n    \"status\": \"OPEN\",\n    \"assignee\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/incident",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "452"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1c4-GkWEw7UJDExyvca2fqlgJ5chbwE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 04 Jul 2026 13:12:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Incident created successfully\",\n    \"data\": {\n        \"id\": \"01KWPM4VEKVX0Z2WM6PEXMW77B\",\n        \"incidentId\": \"INC-01KWPM4VCHHGNP4KF2P9T3FE8H\",\n        \"title\": \"Something went wrong\",\n        \"description\": \"Some thing went wrong because somwthing left unchecked\",\n        \"service\": \"Dashboard\",\n        \"severity\": \"LOW\",\n        \"status\": \"OPEN\",\n        \"assignee\": null,\n        \"summary\": null,\n        \"recommendation\": null,\n        \"rootCause\": null,\n        \"createdAt\": \"2026-07-04T13:12:36.052Z\",\n        \"updatedAt\": \"2026-07-04T13:12:36.052Z\"\n    }\n}"
+				},
+				{
+					"name": "201",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Something went wrong\",\n    \"description\": \"Some thing went wrong because somwthing left unchecked\",\n    \"service\": \"Dashboard\",\n    \"severity\": \"LOW\",\n    \"status\": \"OPEN\",\n    \"assignee\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/incident",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "70"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"46-6EOOz21+Vu2nDfORfKFGZnihC/I\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 04 Jul 2026 13:13:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Incident created successfully\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "409",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Something went wrong\",\n    \"incidentId\": \"INC-01KWPM4CW5FEK4KP0DE67HWZ00\",\n    \"description\": \"Some thing went wrong because somwthing left unchecked\",\n    \"service\": \"Dashboard\",\n    \"severity\": \"LOW\",\n    \"status\": \"OPEN\",\n    \"assignee\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/incident",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "66"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"42-8inIcvQAKsTl66ZJeEsXoYNVBgQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 04 Jul 2026 14:52:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Incident with this ID already exists\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get By Filter",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Something went wrong\",\n    \"description\": \"Some thing went wrong because somwthing left unchecked\",\n    \"service\": \"Dashboard\",\n    \"severity\": \"LOW\",\n    \"status\": \"OPEN\",\n    \"assignee\": null\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/incident/filter?searchQuery=&severity=LOW&status=OPEN&pageSize=10&pageNumber=1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"incident",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "searchQuery",
+							"value": ""
+						},
+						{
+							"key": "severity",
+							"value": "LOW"
+						},
+						{
+							"key": "status",
+							"value": "OPEN"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "pageNumber",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Something went wrong\",\n    \"description\": \"Some thing went wrong because somwthing left unchecked\",\n    \"service\": \"Dashboard\",\n    \"severity\": \"LOW\",\n    \"status\": \"OPEN\",\n    \"assignee\": null\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/incident/filter?searchQuery=&severity=LOW&status=OPEN&pageSize=10&pageNumber=1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "searchQuery",
+									"value": ""
+								},
+								{
+									"key": "severity",
+									"value": "LOW"
+								},
+								{
+									"key": "status",
+									"value": "OPEN"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "512"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"200-ZMxA+d3+rC5B79IK5Hq7uBO59ss\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 04 Jul 2026 15:05:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Incidents fetched successfully\",\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"01KWPTKKT7VKHXF46S1C7T1AY2\",\n                \"incidentId\": \"INC-01KWPM4CW5FEK4KP0DE67HWZ00\",\n                \"title\": \"Something went wrong\",\n                \"description\": \"Some thing went wrong because somwthing left unchecked\",\n                \"service\": \"Dashboard\",\n                \"severity\": \"LOW\",\n                \"status\": \"OPEN\",\n                \"assignee\": null,\n                \"summary\": null,\n                \"recommendation\": null,\n                \"rootCause\": null,\n                \"createdAt\": \"2026-07-04T15:05:31.208Z\",\n                \"updatedAt\": \"2026-07-04T15:05:31.208Z\"\n            }\n        ],\n        \"page\": 1,\n        \"totalPages\": 1,\n        \"total\": 1,\n        \"pageSize\": 10\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Incident Status",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/incident/01KWR8AT9AF2YBRZ4BWTZKD1H9/status/RESOLVED",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"incident",
+						"01KWR8AT9AF2YBRZ4BWTZKD1H9",
+						"status",
+						"RESOLVED"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/incident/01KWR8AT9AF2YBRZ4BWTZKD1H9/status/RESOLVED",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident",
+								"01KWR8AT9AF2YBRZ4BWTZKD1H9",
+								"status",
+								"RESOLVED"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "77"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4d-NmVVFt/g68I0eiedqcorZrESB+E\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Jul 2026 05:31:53 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Incident status updated successfully\",\n    \"data\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Incident Severity",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/incident/01KWR8AT9AF2YBRZ4BWTZKD1H9/severity/CRITICAL",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"incident",
+						"01KWR8AT9AF2YBRZ4BWTZKD1H9",
+						"severity",
+						"CRITICAL"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/incident/01KWR8AT9AF2YBRZ4BWTZKD1H9/severity/CRITICAL",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"incident",
+								"01KWR8AT9AF2YBRZ4BWTZKD1H9",
+								"severity",
+								"CRITICAL"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "77"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4d-NmVVFt/g68I0eiedqcorZrESB+E\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Jul 2026 05:33:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Incident status updated successfully\",\n    \"data\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Severity Recommendation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"API key expired\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/ai/incident/suggest-severity",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"ai",
+						"incident",
+						"suggest-severity"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"API key expired\",\n    \"description\": \"All the services that were dependent on the API key are down.\",\n    \"service\": \"Dashboard\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/ai/incident/suggest-severity",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"ai",
+								"incident",
+								"suggest-severity"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "202"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"ca-7KypUMiMzQNX2HJUzr3KYk0K2O4\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Jul 2026 12:13:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Severity suggested successfully!\",\n    \"data\": {\n        \"severity\": \"CRITICAL\",\n        \"reason\": \"Expired API key caused all dependent services to be down, leading to a critical widespread outage.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Incident AI Insights",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/ai/incident/01KWS7ZECZ1H3Q7Y3K9HTQCN97/insights",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"ai",
+						"incident",
+						"01KWS7ZECZ1H3Q7Y3K9HTQCN97",
+						"insights"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/ai/incident/01KWS7ZECZ1H3Q7Y3K9HTQCN97/insights",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"ai",
+								"incident",
+								"01KWS7ZECZ1H3Q7Y3K9HTQCN97",
+								"insights"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Resource-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Origin-Agent-Cluster",
+							"value": "?1"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "960"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3c0-4w0Q938k9uTx/9nJGC4bV0CbMjA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Jul 2026 15:29:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Severity suggested successfully!\",\n    \"data\": {\n        \"summary\": \"Following a recent feature release, some users are experiencing a blank white screen on the Dashboard service while others can access details normally.\",\n        \"possibleCauses\": [\n            \"JavaScript rendering error introduced in the frontend application by the recent release.\",\n            \"Caching or CDN mismatch serving inconsistent assets to different user segments.\",\n            \"Unhandled API response structure causing frontend failures for specific user data.\",\n            \"Browser incompatibility with the newly deployed frontend feature code.\"\n        ],\n        \"recommendedActions\": [\n            \"Inspect browser console logs from affected users for frontend javascript exceptions.\",\n            \"Review backend API error rates and application logs since the latest release.\",\n            \"Verify CDN cache status and clear frontend assets if inconsistencies exist.\",\n            \"Identify common browser versions or user configurations among the affected population.\"\n        ],\n        \"confidence\": \"LOW\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Regenerate Incident AI Insights Copy",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/ai/incident/01KWS7ZECZ1H3Q7Y3K9HTQCN97/insights/regenerate",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"ai",
+						"incident",
+						"01KWS7ZECZ1H3Q7Y3K9HTQCN97",
+						"insights",
+						"regenerate"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/ai/incident/01KWS7ZECZ1H3Q7Y3K9HTQCN97/insights/regenerate",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"ai",
+								"incident",
+								"01KWS7ZECZ1H3Q7Y3K9HTQCN97",
+								"insights",
+								"regenerate"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Severity suggested successfully!\",\n    \"data\": {\n        \"summary\": \"Following a recent feature release, some users are experiencing a white screen on the Dashboard service while others can access details normally. This indicates a partial disruption potentially tied to the deployment.\",\n        \"possibleCauses\": [\n            \"Frontend JavaScript exception introduced in the recent feature release.\",\n            \"Cached static assets or CDN mismatch affecting specific user cohorts.\",\n            \"Unhandled API error or payload structure change in the new feature.\"\n        ],\n        \"recommendedActions\": [\n            \"Analyze client-side error monitoring tools for JavaScript exceptions.\",\n            \"Review deployment logs and code changes from the recent release.\",\n            \"Verify API endpoint health and response payloads for the dashboard.\",\n            \"Evaluate the feasibility of rolling back the recent feature deployment.\"\n        ],\n        \"confidence\": \"LOW\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get KPIs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/incident/kpis",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"incident",
+						"kpis"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

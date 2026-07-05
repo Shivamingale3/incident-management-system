@@ -19,6 +19,13 @@ const incidentRouter = Router();
 const createIncidentLimiter = createRateLimiter('CREATE_INCIDENT');
 const updateIncidentLimiter = createRateLimiter('UPDATE_INCIDENT');
 
+incidentRouter.post(
+  '/',
+  createIncidentLimiter,
+  validationMiddleware(addIncidentValidationSchema),
+  addNewIncidentController,
+);
+
 incidentRouter.get(
   '/filter',
   validationMiddleware(getIncidentsByFilterValidationSchema, 'query'),
@@ -43,13 +50,6 @@ incidentRouter.patch(
   updateIncidentLimiter,
   validationMiddleware(updateIncidentSeverityValidationSchema, 'params'),
   updateIncidentSeverityController,
-);
-
-incidentRouter.post(
-  '/',
-  createIncidentLimiter,
-  validationMiddleware(addIncidentValidationSchema),
-  addNewIncidentController,
 );
 
 export default incidentRouter;

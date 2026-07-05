@@ -181,7 +181,7 @@ function RichTextEditor({
   return (
     <div
       className={cn(
-        "rounded-lg border overflow-hidden",
+        "rounded-none border overflow-hidden",
         readOnly
           ? "bg-muted/30 border-border/50"
           : "border-border bg-transparent",
@@ -307,7 +307,7 @@ function RichTextEditor({
       <div
         className={cn("rich-text-content overflow-x-auto", !readOnly && "p-3")}
       >
-        <EditorContent editor={editor} className={`${readOnly ? "p-5" : ""}`} />
+        <EditorContent editor={editor} className={`${readOnly ? "p-5" : ""} rounded-none`} />
       </div>
 
       {!readOnly && maxCharacters != null && (

@@ -16,5 +16,6 @@ export default function useGetSuggestedSeverity({
     queryFn: () =>
       getSuggestedIncidentSeverity({ title, description, service }),
     enabled: false,
+    retry: false,
   });
 }

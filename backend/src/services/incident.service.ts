@@ -37,10 +37,14 @@ export async function createNewIncident(incidentData: AddNewIncidentData): Promi
       throw new HttpException(400, 'Incident title is required');
     }
 
-    await db.incident.findUniqueOrThrow({
+    const existingIncident = await db.incident.findUnique({
       where: { incidentId: incidentData.incidentId },
       select: { id: true },
     });
+
+    if (existingIncident) {
+      throw new HttpException(409, 'Incident with this ID already exists');
+    }
 
     const newIncident = await db.incident.create({
       data: {
@@ -56,9 +60,6 @@ export async function createNewIncident(incidentData: AddNewIncidentData): Promi
 
     return newIncident;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
-      throw new HttpException(404, 'Incident not found');
-    }
     if (error instanceof HttpException) {
       throw error;
     }

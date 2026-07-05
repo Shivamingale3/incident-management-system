@@ -9,7 +9,8 @@ CREATE TABLE "incidents" (
     "status" TEXT NOT NULL DEFAULT 'OPEN',
     "assignee" TEXT,
     "summary" TEXT,
-    "recommendation" TEXT,
+    "possibleCauses" TEXT,
+    "recommendedActions" TEXT,
     "rootCause" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL

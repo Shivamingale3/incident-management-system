@@ -37,6 +37,6 @@ Bonus
 
 Use AI capabilities (LLM APIs, Copilot, etc.) to provide:
 
-Incident summaries
 Severity recommendations
+Incident summaries
 Root-cause suggestions

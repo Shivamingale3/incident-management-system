@@ -3,11 +3,14 @@ import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { fileURLToPath } from "url";
 import { envSchema } from "./src/validations/env.validation.ts";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const rawEnv = loadEnv(mode, process.cwd(), "VITE_");
+  const rawEnv = loadEnv(mode, path.resolve(__dirname, ".."), "VITE_");
 
   const result = envSchema.safeParse(rawEnv);
 
@@ -21,6 +24,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    envDir: path.resolve(__dirname, ".."),
     plugins: [
       react(),
       babel({ presets: [reactCompilerPreset()] }),

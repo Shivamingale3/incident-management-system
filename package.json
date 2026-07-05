@@ -4,7 +4,17 @@
   "private": true,
   "description": "Incident Management System — monorepo root",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "install:all": "npm install && npm --prefix frontend install && npm --prefix backend install",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "db:generate": "npm --prefix backend run prisma:generate",
+    "db:migrate": "npm --prefix backend run prisma:migrate",
+    "db:setup": "npm run db:generate && npm run db:migrate",
+    "setup": "npm run install:all && npm run db:setup"
   },
   "devDependencies": {
     "husky": "^9.1.7"

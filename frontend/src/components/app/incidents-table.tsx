@@ -8,8 +8,8 @@ import {
 import { Card } from "@/components/ui/card";
 import IncidentTableRow from "./incident-table-row";
 import IncidentsTableSkeleton from "./skeletons/incidents-table-skeleton";
-import IncidentsTableEmpty from "./incidents-table-empty";
-import IncidentsTableError from "./incidents-table-error";
+import IncidentsTableEmpty from "./empty/incidents-table-empty";
+import IncidentsTableError from "./errors/incidents-table-error";
 import type { IncidentsTableProps } from "@/types/incidents.types";
 
 const IncidentsTable = ({

@@ -14,7 +14,8 @@ export type Incident = {
   status: IncidentStatusType;
   assignee: string | null;
   summary: string | null;
-  recommendation: string | null;
+  possibleCauses: string | null;
+  recommendedActions: string | null;
   rootCause: string | null;
   createdAt: string;
   updatedAt: string;

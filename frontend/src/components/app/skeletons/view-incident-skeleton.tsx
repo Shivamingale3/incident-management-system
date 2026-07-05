@@ -4,6 +4,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ViewIncidentSkeleton = () => {
   return (
@@ -11,11 +12,11 @@ const ViewIncidentSkeleton = () => {
       <DialogHeader>
         <div>
           <DialogTitle className="text-xl font-semibold mb-2">
-            <div className="h-7 w-2/3 bg-muted animate-pulse rounded-md" />
+            <Skeleton className="h-7 w-2/3" />
           </DialogTitle>
           <div className="space-y-1.5 mt-2">
-            <div className="h-4 w-1/4 bg-muted animate-pulse rounded-md" />
-            <div className="h-4 w-1/3 bg-muted animate-pulse rounded-md" />
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-4 w-1/3" />
           </div>
         </div>
         <Separator className="my-2" />
@@ -24,13 +25,13 @@ const ViewIncidentSkeleton = () => {
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Status
             </span>
-            <div className="h-9 w-32 bg-muted animate-pulse rounded-md" />
+            <Skeleton className="h-9 w-32" />
           </div>
           <div className="flex flex-col space-y-2">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Severity
             </span>
-            <div className="h-9 w-32 bg-muted animate-pulse rounded-md" />
+            <Skeleton className="h-9 w-32" />
           </div>
         </div>
       </DialogHeader>
@@ -40,31 +41,31 @@ const ViewIncidentSkeleton = () => {
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Service
             </span>
-            <div className="h-6 w-24 bg-muted animate-pulse rounded-md" />
+            <Skeleton className="h-6 w-24" />
           </div>
           <div className="flex flex-col space-y-2">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Assignee
             </span>
             <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-full bg-muted animate-pulse" />
-              <div className="h-6 w-28 bg-muted animate-pulse rounded-md" />
+              <Skeleton className="h-6 w-6 rounded-full shrink-0" />
+              <Skeleton className="h-6 w-28" />
             </div>
           </div>
           <div className="flex flex-col space-y-2">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Created At
             </span>
-            <div className="h-6 w-36 bg-muted animate-pulse rounded-md" />
+            <Skeleton className="h-6 w-36" />
           </div>
         </div>
         <div className="w-full space-y-3">
-          <div className="h-8 w-32 bg-muted animate-pulse rounded-md mb-2" />
-          <div className="h-4 w-full bg-muted animate-pulse rounded-md" />
-          <div className="h-4 w-11/12 bg-muted animate-pulse rounded-md" />
-          <div className="h-4 w-4/5 bg-muted animate-pulse rounded-md" />
-          <div className="h-4 w-full bg-muted animate-pulse rounded-md" />
-          <div className="h-4 w-3/4 bg-muted animate-pulse rounded-md" />
+          <Skeleton className="h-8 w-32 mb-2" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-11/12" />
+          <Skeleton className="h-4 w-4/5" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
         </div>
       </div>
     </DialogContent>

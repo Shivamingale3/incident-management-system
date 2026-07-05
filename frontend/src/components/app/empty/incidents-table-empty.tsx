@@ -5,7 +5,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "../ui/empty";
+} from "../../ui/empty";
 import { GalleryThumbnailsIcon } from "lucide-react";
 
 const IncidentsTableEmpty = () => {

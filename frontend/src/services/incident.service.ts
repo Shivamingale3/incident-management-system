@@ -8,6 +8,7 @@ import type {
   IncidentSeverityRecommendation,
   IncidentStatusType,
   KPIItem,
+  IncidentAiInsights,
 } from "@/types/incidents.types";
 
 export async function createIncident(payload: AddNewIncident): Promise<void> {
@@ -89,5 +90,23 @@ export async function getSuggestedIncidentSeverity({
 
 export async function getKpisForDashboard(): Promise<KPIItem[]> {
   const response = await api.get<ApiResponse<KPIItem[]>>("/incident/kpis");
+  return response.data.data;
+}
+
+export async function getIncidentAiInsights(
+  incidentId: string,
+): Promise<IncidentAiInsights> {
+  const response = await api.get<ApiResponse<IncidentAiInsights>>(
+    `/ai/incident/${incidentId}/insights`,
+  );
+  return response.data.data;
+}
+
+export async function regenerateIncidentAiInsights(
+  incidentId: string,
+): Promise<IncidentAiInsights> {
+  const response = await api.put<ApiResponse<IncidentAiInsights>>(
+    `/ai/incident/${incidentId}/insights/regenerate`,
+  );
   return response.data.data;
 }

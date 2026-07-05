@@ -10,7 +10,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
-      <Toaster toastOptions={{classNames:{toast:"rounded-none!"}}}/>
+      <Toaster toastOptions={{ classNames: { toast: "rounded-none!" } }} />
     </QueryClientProvider>
   </StrictMode>,
 );

@@ -19,8 +19,8 @@ const IncidentsTableEmpty = () => {
             </EmptyMedia>
             <EmptyTitle className="text-xl">No Incidents Yet</EmptyTitle>
             <EmptyDescription className="text-lg">
-              No Incidents found everything good. Click on top-right Create Incident
-              button to create an incident.
+              No Incidents found everything good. Click on top-right Create
+              Incident button to create an incident.
             </EmptyDescription>
           </EmptyHeader>
         </Empty>

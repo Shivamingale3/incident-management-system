@@ -87,8 +87,7 @@ const PaginationBar = ({
         <span className="font-medium text-foreground">
           {startItem}–{endItem}
         </span>{" "}
-        of{" "}
-        <span className="font-medium text-foreground">{totalItems}</span>{" "}
+        of <span className="font-medium text-foreground">{totalItems}</span>{" "}
         incidents
       </p>
 

@@ -307,7 +307,10 @@ function RichTextEditor({
       <div
         className={cn("rich-text-content overflow-x-auto", !readOnly && "p-3")}
       >
-        <EditorContent editor={editor} className={`${readOnly ? "p-5" : ""} rounded-none`} />
+        <EditorContent
+          editor={editor}
+          className={`${readOnly ? "p-5" : ""} rounded-none`}
+        />
       </div>
 
       {!readOnly && maxCharacters != null && (

@@ -29,7 +29,9 @@ export const SelectIncidentStatus = ({
       disabled={disabled}
     >
       <SelectTrigger className={includeAll ? "w-max" : "w-full"}>
-        <SelectValue placeholder={includeAll ? "Status: All" : "Select status"} />
+        <SelectValue
+          placeholder={includeAll ? "Status: All" : "Select status"}
+        />
       </SelectTrigger>
       <SelectContent>
         {includeAll && <SelectItem value="ALL">Status: All</SelectItem>}

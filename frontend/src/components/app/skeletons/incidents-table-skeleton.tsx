@@ -2,9 +2,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 
 const SkeletonCell = ({ className = "" }: { className?: string }) => (
   <TableCell className="h-[5vh]">
-    <div
-      className={`h-4 rounded-md bg-muted animate-pulse ${className}`}
-    />
+    <div className={`h-4 rounded-md bg-muted animate-pulse ${className}`} />
   </TableCell>
 );
 

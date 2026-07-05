@@ -14,7 +14,10 @@ const IncidentTableRow = ({ incident }: { incident: Incident }) => {
   const [viewIncident, setViewIncident] = useState<boolean>(false);
   return (
     <>
-      <TableRow className="cursor-pointer" onClick={() => setViewIncident(true)}>
+      <TableRow
+        className="cursor-pointer"
+        onClick={() => setViewIncident(true)}
+      >
         <TableCell>{incident.incidentId}</TableCell>
         <TableCell>{incident.title}</TableCell>
         <TableCell>{incident.service ?? "-"}</TableCell>

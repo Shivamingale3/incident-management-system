@@ -27,7 +27,11 @@ import type { AddNewIncident } from "@/types/incidents.types";
 const CreateNewIncident = () => {
   const [open, setOpen] = useState(false);
 
-  const form = useForm<z.input<typeof addIncidentValidationSchema>, unknown, AddNewIncident>({
+  const form = useForm<
+    z.input<typeof addIncidentValidationSchema>,
+    unknown,
+    AddNewIncident
+  >({
     resolver: zodResolver(addIncidentValidationSchema),
     defaultValues: DEFAULT_VALUES,
     mode: "onSubmit",

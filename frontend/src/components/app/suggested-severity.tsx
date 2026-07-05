@@ -9,8 +9,9 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import { SeverityBadge } from "./severity-badge";
-import { Loader2, AlertCircle, RefreshCw, Sparkles, Check } from "lucide-react";
+import { AlertCircle, RefreshCw, Sparkles, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import SuggestedSeveritySkeleton from "./skeletons/suggested-severity-skeleton";
 
 const SuggestedSeverity = ({
   recommendation,
@@ -50,24 +51,7 @@ const SuggestedSeverity = ({
 
       <CardContent className="space-y-4 relative z-10">
         {isLoading ? (
-          <div className="space-y-3 py-2">
-            <div className="flex items-center justify-between">
-              <div className="h-4 w-28 animate-pulse rounded bg-muted/80" />
-              <div className="h-6 w-20 animate-pulse rounded-full bg-muted/80" />
-            </div>
-            <div className="space-y-2 pt-2">
-              <div className="h-3 w-16 animate-pulse rounded bg-muted/80" />
-              <div className="h-3 w-full animate-pulse rounded bg-muted/80" />
-              <div className="h-3 w-11/12 animate-pulse rounded bg-muted/80" />
-              <div className="h-3 w-4/5 animate-pulse rounded bg-muted/80" />
-            </div>
-            <div className="flex items-center gap-2 pt-4">
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
-              <span className="text-xs font-medium text-muted-foreground animate-pulse">
-                Analyzing incident data...
-              </span>
-            </div>
-          </div>
+          <SuggestedSeveritySkeleton />
         ) : isError ? (
           <div className="flex flex-col gap-3 rounded-lg border border-destructive/20 bg-destructive/10 p-3.5">
             <div className="flex items-start gap-2.5">
@@ -104,6 +88,10 @@ const SuggestedSeverity = ({
                 {recommendation.reason}
               </p>
             </div>
+            <span className="text-xs text-foreground/50">
+              AI Insights are suggestions and should be verified before
+              accepting.
+            </span>
           </div>
         ) : (
           <div className="py-6 text-center space-y-2">

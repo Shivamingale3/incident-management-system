@@ -12,6 +12,7 @@ import {
 import SelectIncidentStatus from "./select-incident-status";
 import { RichTextEditor } from "../ui/rich-text-editor";
 import { SeverityBadge } from "./severity-badge";
+import { IncidentStatusStyles } from "@/constants/incidentStatus.constants";
 
 const ViewIncident = ({
   incident,
@@ -37,7 +38,9 @@ const ViewIncident = ({
           </DialogDescription>
           <SeverityBadge severity={incident.severity} />
         </div>
-        <div className="mr-10 border-2">
+        <div
+          className={`mr-10 border-2 ${IncidentStatusStyles[incident.status]} `}
+        >
           <SelectIncidentStatus
             status={incident.status}
             setStatus={handleUpdateStatus}

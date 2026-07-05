@@ -48,17 +48,17 @@ export function IncidentFormFields({
   const { control, setValue, getValues } = useFormContext<AddNewIncident>();
   const [showSuggestion, setShowSuggestion] = useState(false);
 
-  const title = getValues("title");
-  const description = getValues("description") ?? null;
-  const service = getValues("service") ?? null;
-
   const {
     data: recommendation,
     error: queryError,
     isFetching,
     isError,
     refetch,
-  } = useGetSuggestedSeverity({ title, description, service });
+  } = useGetSuggestedSeverity(() => ({
+    title: getValues("title"),
+    description: getValues("description") ?? null,
+    service: getValues("service") ?? null,
+  }));
 
   const handleSuggestClick = () => {
     if (getValues("title").trim().length > 0) {

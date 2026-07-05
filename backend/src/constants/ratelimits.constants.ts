@@ -32,6 +32,12 @@ export const RATE_LIMITS = {
     maxRequests: 10,
     message: 'Too many suggestion requests. Please try again later.',
   },
+
+  INCIDENT_AI_INSIGHTS: {
+    windowMs: ONE_MINUTE_MS,
+    maxRequests: 5,
+    message: 'Too many AI insights requests. Please try again later.',
+  },
 } as const satisfies Record<string, RateLimitConfig>;
 
 export type RateLimitKey = keyof typeof RATE_LIMITS;

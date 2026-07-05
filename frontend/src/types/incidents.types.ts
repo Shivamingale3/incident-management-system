@@ -90,3 +90,10 @@ export type SuggestedSeverityProps = {
   onRetry: () => void;
   onAccept: (severity: IncidentSeverityType) => void;
 };
+
+export type IncidentAiInsights = {
+  summary: string;
+  possibleCauses: string[];
+  recommendedActions: string[];
+  confidence: "HIGH" | "MEDIUM" | "LOW";
+};

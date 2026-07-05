@@ -4,7 +4,7 @@ export function formatIncidentCreatedAt(
   isoDate: string = "2026-07-04T13:41:42+05:30",
 ): string {
   const date = DateTime.fromISO(isoDate);
-  return date.toRelative();
+  return date.toRelative() ?? "Unknown";
 }
 
 export function formatIncidentCreatedAtToLocale(isoDate: string) {

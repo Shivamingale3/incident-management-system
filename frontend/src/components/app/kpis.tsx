@@ -27,7 +27,7 @@ const Kpis = () => {
 
   return (
     <section className="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 shrink-0">
-      {kpis.map((stat) => (
+      {kpis?.map((stat) => (
         <KPIcard
           key={stat.title}
           title={stat.title}

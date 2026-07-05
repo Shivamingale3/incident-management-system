@@ -127,7 +127,9 @@ const ViewIncident = ({
           <div className={`border-2 ${IncidentStatusStyles[incident.status]} `}>
             <SelectIncidentStatus
               status={incident.status}
-              setStatus={handleUpdateStatus}
+              setStatus={(status) => {
+                if (status) handleUpdateStatus(status);
+              }}
               disabled={isUpdatingIncidentStatus}
             />
           </div>

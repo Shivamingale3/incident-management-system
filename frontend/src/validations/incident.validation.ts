@@ -38,7 +38,7 @@ export const addIncidentValidationSchema = z.object({
               "Description content is too long, must not exceed 500 characters",
           },
         )
-        .nullish(),
+        .nullable(),
     ),
   service: z
     .string("Service must be a string")
@@ -49,7 +49,7 @@ export const addIncidentValidationSchema = z.object({
         .string()
         .min(2, "Service name must be at least 2 characters")
         .max(100, "Service name must not exceed 100 characters")
-        .nullish(),
+        .nullable(),
     ),
 
   severity: z.enum(
@@ -71,6 +71,6 @@ export const addIncidentValidationSchema = z.object({
         .string()
         .min(1, "Assignee name must be at least 1 character")
         .max(100, "Assignee name must not exceed 100 characters")
-        .nullish(),
+        .nullable(),
     ),
 });

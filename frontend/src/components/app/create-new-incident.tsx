@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { LoaderCircle, Plus, XIcon } from "lucide-react";
 import axios from "axios";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +27,7 @@ import type { AddNewIncident } from "@/types/incidents.types";
 const CreateNewIncident = () => {
   const [open, setOpen] = useState(false);
 
-  const form = useForm<AddNewIncident>({
+  const form = useForm<z.input<typeof addIncidentValidationSchema>, unknown, AddNewIncident>({
     resolver: zodResolver(addIncidentValidationSchema),
     defaultValues: DEFAULT_VALUES,
     mode: "onSubmit",

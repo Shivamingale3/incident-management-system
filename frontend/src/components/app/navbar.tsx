@@ -1,4 +1,4 @@
-import CreateNewIncident from "./create-new-incident";
+import { CreateNewIncident } from "./create-new-incident";
 
 const Navbar = () => {
   return (

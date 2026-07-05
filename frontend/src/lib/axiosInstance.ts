@@ -19,7 +19,7 @@ api.interceptors.response.use(
       error.message ||
       "Something went wrong, Please try again!";
     toast.error(errorMsg);
-    return error;
+    return Promise.reject(error);
   },
 );
 

@@ -125,6 +125,7 @@ export function IncidentFormFields({
                   setSeverity={(val) =>
                     field.onChange(val ?? field.value)
                   }
+                  disabled={isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -148,6 +149,7 @@ export function IncidentFormFields({
                   setStatus={(val) =>
                     field.onChange(val ?? field.value)
                   }
+                  disabled={isPending}
                 />
               </FormControl>
               <FormMessage />

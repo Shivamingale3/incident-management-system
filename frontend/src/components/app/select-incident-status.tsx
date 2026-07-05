@@ -13,10 +13,12 @@ export const SelectIncidentStatus = ({
   status,
   setStatus,
   includeAll = true,
+  disabled = false,
 }: {
   status: IncidentStatusType | null;
   setStatus: (status: IncidentStatusType | null) => void;
   includeAll?: boolean;
+  disabled?: boolean;
 }) => {
   return (
     <Select
@@ -24,6 +26,7 @@ export const SelectIncidentStatus = ({
       onValueChange={(val) =>
         setStatus(val === "ALL" ? null : (val as IncidentStatusType))
       }
+      disabled={disabled}
     >
       <SelectTrigger className={includeAll ? "w-max" : "w-full"}>
         <SelectValue placeholder={includeAll ? "Status: All" : "Select status"} />

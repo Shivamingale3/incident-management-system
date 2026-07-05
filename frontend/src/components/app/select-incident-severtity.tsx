@@ -13,10 +13,12 @@ export const SelectIncidentSeverity = ({
   severity,
   setSeverity,
   includeAll = true,
+  disabled = false,
 }: {
   severity: IncidentSeverityType | null;
   setSeverity: (severity: IncidentSeverityType | null) => void;
   includeAll?: boolean;
+  disabled?: boolean;
 }) => {
   return (
     <Select
@@ -24,6 +26,7 @@ export const SelectIncidentSeverity = ({
       onValueChange={(val) =>
         setSeverity(val === "ALL" ? null : (val as IncidentSeverityType))
       }
+      disabled={disabled}
     >
       <SelectTrigger className={includeAll ? "w-max" : "w-full"}>
         <SelectValue placeholder={includeAll ? "Severity: All" : "Select severity"} />

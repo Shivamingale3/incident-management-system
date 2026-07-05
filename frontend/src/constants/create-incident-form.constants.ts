@@ -3,11 +3,11 @@ import type { AddNewIncident } from "@/types/incidents.types";
 export const DEFAULT_VALUES: AddNewIncident = {
   title: "",
   incidentId: "",
-  description: "",
-  service: "",
+  description: null,
+  service: null,
   severity: "LOW",
   status: "OPEN",
-  assignee: "",
+  assignee: null,
 };
 
 export const FIELD_LABELS = {

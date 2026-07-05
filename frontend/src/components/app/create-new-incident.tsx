@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Plus, XIcon } from "lucide-react";
+import { LoaderCircle, Plus, XIcon } from "lucide-react";
+import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,15 +19,12 @@ import { Form } from "@/components/ui/form";
 import { addIncidentValidationSchema } from "@/validations/incident.validation";
 import { useCreateIncident } from "@/hooks/use-create-incident";
 import { IncidentFormFields } from "@/components/app/incident-form-fields";
-import {
-  DEFAULT_VALUES,
-} from "@/constants/create-incident-form.constants";
+import { DEFAULT_VALUES } from "@/constants/create-incident-form.constants";
 import incidentIdGenerator from "@/utils/generateIncidentId";
 import type { AddNewIncident } from "@/types/incidents.types";
 
 const CreateNewIncident = () => {
   const [open, setOpen] = useState(false);
-  const [incidentId, setIncidentId] = useState("");
 
   const form = useForm<AddNewIncident>({
     resolver: zodResolver(addIncidentValidationSchema),
@@ -35,6 +33,26 @@ const CreateNewIncident = () => {
   });
 
   const { mutate, isPending } = useCreateIncident();
+
+  // Single source of truth: read incidentId from form state, not separate useState
+  const incidentId = useWatch({ control: form.control, name: "incidentId" });
+
+  /**
+   * Resets form state and closes the dialog.
+   * `useTimeout` is needed for handlers triggered by Radix pointer/escape events
+   * to avoid race conditions with Radix's own close logic.
+   */
+  const resetAndClose = useCallback(
+    (useTimeout = false) => {
+      form.reset();
+      if (useTimeout) {
+        setTimeout(() => setOpen(false), 0);
+      } else {
+        setOpen(false);
+      }
+    },
+    [form],
+  );
 
   const handleClose = useCallback(() => {
     if (form.formState.isDirty) {
@@ -46,16 +64,13 @@ const CreateNewIncident = () => {
         return;
       }
     }
-    form.reset();
-    setIncidentId("");
-    setOpen(false);
-  }, [form]);
+    resetAndClose();
+  }, [form, resetAndClose]);
 
   const handleOpenChange = useCallback(
     (nextOpen: boolean) => {
       if (nextOpen) {
         const newId = incidentIdGenerator();
-        setIncidentId(newId);
         form.reset({ ...DEFAULT_VALUES, incidentId: newId });
         setOpen(true);
       } else {
@@ -83,13 +98,11 @@ const CreateNewIncident = () => {
             "You have unsaved changes. Are you sure you want to discard them?",
           )
         ) {
-          form.reset();
-          setIncidentId("");
-          setTimeout(() => setOpen(false), 0);
+          resetAndClose(true);
         }
       }
     },
-    [form],
+    [form, resetAndClose],
   );
 
   const handleEscapeKeyDown = useCallback(
@@ -101,34 +114,52 @@ const CreateNewIncident = () => {
             "You have unsaved changes. Are you sure you want to discard them?",
           )
         ) {
-          form.reset();
-          setIncidentId("");
-          setTimeout(() => setOpen(false), 0);
+          resetAndClose(true);
         }
       }
     },
-    [form],
+    [form, resetAndClose],
+  );
+
+  const handleInteractOutside = useCallback(
+    (e: CustomEvent<{ originalEvent: Event }>) => {
+      // Prevent Radix from closing the dialog when interacting
+      // with portalled Select dropdowns
+      const target = (e as CustomEvent<{ originalEvent: Event }>).detail
+        ?.originalEvent?.target as HTMLElement | null;
+      if (target?.closest("[data-slot='select-content']")) {
+        e.preventDefault();
+      }
+    },
+    [],
   );
 
   const onSubmit = useCallback(
     (data: AddNewIncident) => {
-      const payload: AddNewIncident = {
-        ...data,
-        description: data.description || null,
-        service: data.service || null,
-        assignee: data.assignee || null,
-      };
+      // Guard against rapid double-submission before React re-renders
+      if (isPending) return;
 
-      mutate(payload, {
+      mutate(data, {
         onSuccess: () => {
           toast.success("Incident created successfully.");
-          form.reset();
-          setIncidentId("");
-          setOpen(false);
+          resetAndClose();
+        },
+        onError: (error) => {
+          // Handle duplicate incident ID (409 Conflict)
+          if (axios.isAxiosError(error) && error.response?.status === 409) {
+            const newId = incidentIdGenerator();
+            form.setValue("incidentId", newId);
+            toast.error(
+              "Incident ID already exists. A new ID has been generated — please try again.",
+            );
+            return;
+          }
+          // For other errors, the axios interceptor already shows a toast.
+          // We just keep the form open so the user can retry.
         },
       });
     },
-    [form, mutate],
+    [form, mutate, isPending, resetAndClose],
   );
 
   return (
@@ -140,19 +171,11 @@ const CreateNewIncident = () => {
         </Button>
       </DialogTrigger>
       <DialogContent
-      className="min-w-7xl"
+        className="w-full max-w-5xl"
         showCloseButton={false}
         onPointerDownOutside={handlePointerDownOutside}
         onEscapeKeyDown={handleEscapeKeyDown}
-        onInteractOutside={(e) => {
-          // Prevent Radix from closing the dialog when interacting
-          // with portalled Select dropdowns
-          const target = (e as CustomEvent<{ originalEvent: Event }>).detail
-            ?.originalEvent?.target as HTMLElement | null;
-          if (target?.closest("[data-slot='select-content']")) {
-            e.preventDefault();
-          }
-        }}
+        onInteractOutside={handleInteractOutside}
       >
         <div className="flex items-center justify-between">
           <DialogHeader>
@@ -183,11 +206,18 @@ const CreateNewIncident = () => {
             />
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={handleClose}>
+              <Button type="button" variant="outline" onClick={handleClose} disabled={isPending}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Creating..." : "Create Incident"}
+                {isPending ? (
+                  <>
+                    <LoaderCircle className="animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Incident"
+                )}
               </Button>
             </DialogFooter>
           </form>
@@ -197,4 +227,5 @@ const CreateNewIncident = () => {
   );
 };
 
+export { CreateNewIncident };
 export default CreateNewIncident;

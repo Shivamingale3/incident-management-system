@@ -8,10 +8,25 @@ import type {
 import {
   createNewIncident,
   getAllIncidentsByFilter,
+  getIncidentById,
   updateIncidentSeverity,
   updateIncidentStatus,
 } from '../services/incident.service.js';
 import { ApiResponse } from '../lib/apiResponse.js';
+
+export async function getIncidentByIdController(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const { id } = request.params;
+    const result = await getIncidentById(id as string);
+    response.status(200).json(ApiResponse.success('Incident fetched successfully', result));
+  } catch (error) {
+    next(error);
+  }
+}
 
 export async function addNewIncidentController(
   request: Request,

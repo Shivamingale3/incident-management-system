@@ -1,15 +1,10 @@
 import Toolbar from "./toolbar";
 import IncidentsTable from "./incidents-table";
 import PaginationBar from "./pagination-bar";
-import type { Incident } from "@/types/incidents.types";
 import { useIncidentFilters } from "@/hooks/use-incident-filters";
 import useGetIncidents from "@/hooks/use-get-incidents";
 
-const Incidents = ({
-  onSelectIncident,
-}: {
-  onSelectIncident: (incident: Incident) => void;
-}) => {
+const Incidents = () => {
   const {
     filters,
     setSeverity,
@@ -33,9 +28,7 @@ const Incidents = ({
         ...pagination,
       },
       {
-        refetchInterval: autoFetchPeriod
-          ? autoFetchPeriod.value * 1000
-          : false,
+        refetchInterval: autoFetchPeriod ? autoFetchPeriod.value * 1000 : false,
       },
     );
 
@@ -58,7 +51,6 @@ const Incidents = ({
         isError={isError}
         error={error}
         onRetry={() => refetch()}
-        onSelectIncident={onSelectIncident}
       />
       <PaginationBar
         currentPage={data?.page ?? pagination.pageNo}

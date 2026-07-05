@@ -3,8 +3,8 @@ import type { ApiResponse } from "@/types/app.types";
 import type {
   AddNewIncident,
   GetIncidentsByFilter,
+  Incident,
   IncidentQueryParams,
-  IncidentSeverityType,
   IncidentStatusType,
 } from "@/types/incidents.types";
 
@@ -49,9 +49,7 @@ export async function updateIncidentStatus(
   await api.patch(`/incident/${incidentId}/status/${status}`);
 }
 
-export async function updateIncidentSeverity(
-  incidentId: string,
-  severity: IncidentSeverityType,
-): Promise<void> {
-  await api.patch(`/incident/${incidentId}/severity/${severity}`);
+export async function getIncidentById(id: string): Promise<Incident> {
+  const response = await api.get<ApiResponse<Incident>>(`/incident/${id}`);
+  return response.data.data;
 }

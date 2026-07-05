@@ -75,5 +75,4 @@ export type IncidentsTableProps = {
   isError: boolean;
   error: Error | null;
   onRetry: () => void;
-  onSelectIncident: (incident: Incident) => void;
 };

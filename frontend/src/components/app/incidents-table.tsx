@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import IncidentTableRow from "./incident-table-row";
-import IncidentsTableSkeleton from "./incidents-table-skeleton";
+import IncidentsTableSkeleton from "./skeletons/incidents-table-skeleton";
 import IncidentsTableEmpty from "./incidents-table-empty";
 import IncidentsTableError from "./incidents-table-error";
 import type { IncidentsTableProps } from "@/types/incidents.types";
@@ -18,7 +18,6 @@ const IncidentsTable = ({
   isError,
   error,
   onRetry,
-  onSelectIncident,
 }: IncidentsTableProps) => {
   const renderBody = () => {
     if (isLoading && incidents.length === 0) {
@@ -34,11 +33,7 @@ const IncidentsTable = ({
     }
 
     return incidents.map((incident) => (
-      <IncidentTableRow
-        incident={incident}
-        key={incident.id}
-        onSelect={onSelectIncident}
-      />
+      <IncidentTableRow incident={incident} key={incident.id} />
     ));
   };
 

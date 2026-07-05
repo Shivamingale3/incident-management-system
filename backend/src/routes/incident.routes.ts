@@ -4,12 +4,14 @@ import { addIncidentValidationSchema } from '../validationSchemas/addIncident.sc
 import {
   addNewIncidentController,
   getAllIncidentsByFilterController,
+  getIncidentByIdController,
   updateIncidentSeverityController,
   updateIncidentStatusController,
 } from '../controller/incident.controller.js';
 import { getIncidentsByFilterValidationSchema } from '../validationSchemas/getIncidentFilters.schema.js';
 import updateIncidentStatusValidationSchema from '../validationSchemas/updateIncidentStatus.schema.js';
 import updateIncidentSeverityValidationSchema from '../validationSchemas/updateIncidentSeverity.schema.js';
+import getIncidentByIdValidationSchema from '../validationSchemas/getIncidentById.schema.js';
 
 const incidentRouter = Router();
 
@@ -17,6 +19,12 @@ incidentRouter.get(
   '/filter',
   validationMiddleware(getIncidentsByFilterValidationSchema, 'query'),
   getAllIncidentsByFilterController,
+);
+
+incidentRouter.get(
+  '/:id',
+  validationMiddleware(getIncidentByIdValidationSchema, 'params'),
+  getIncidentByIdController,
 );
 
 incidentRouter.patch(

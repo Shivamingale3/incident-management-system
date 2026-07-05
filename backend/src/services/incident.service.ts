@@ -7,9 +7,29 @@ import type {
 } from '../types/incident.types.js';
 import { HttpException } from '../exceptions/http.exception.js';
 import { logger } from '../utils/logger.js';
-import { type Incident, type Prisma } from '@prisma/client';
+import { Prisma, type Incident } from '@prisma/client';
 import { IncidentSeverity, IncidentStatus } from '../constants/incident.constants.js';
 import type { GetIncidentsByFilterResponse } from '../interfaces/incident.interfaces.js';
+
+export async function getIncidentById(id: string): Promise<Incident> {
+  try {
+    const incident = await db.incident.findUniqueOrThrow({
+      where: { id },
+    });
+    return incident;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new HttpException(404, 'Incident not found');
+    }
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    logger.error(
+      `Error getting incident by ID: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw new HttpException(500, 'Internal Server Error: Failed to get incident by ID');
+  }
+}
 
 export async function createNewIncident(incidentData: AddNewIncidentData): Promise<Incident> {
   try {
@@ -17,14 +37,10 @@ export async function createNewIncident(incidentData: AddNewIncidentData): Promi
       throw new HttpException(400, 'Incident title is required');
     }
 
-    const existingIncidentId = await db.incident.findUnique({
+    await db.incident.findUniqueOrThrow({
       where: { incidentId: incidentData.incidentId },
       select: { id: true },
     });
-
-    if (existingIncidentId) {
-      throw new HttpException(409, 'Incident with this ID already exists');
-    }
 
     const newIncident = await db.incident.create({
       data: {
@@ -40,6 +56,9 @@ export async function createNewIncident(incidentData: AddNewIncidentData): Promi
 
     return newIncident;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new HttpException(404, 'Incident not found');
+    }
     if (error instanceof HttpException) {
       throw error;
     }
@@ -112,14 +131,10 @@ export async function updateIncidentStatus(
       throw new HttpException(400, 'Incident ID is required');
     }
 
-    const existingIncident = await db.incident.findUnique({
+    await db.incident.findUniqueOrThrow({
       where: { id: incidentId },
       select: { incidentId: true },
     });
-
-    if (!existingIncident) {
-      throw new HttpException(404, 'Incident not found');
-    }
 
     const updatedIncident = await db.incident.update({
       where: { id: incidentId },
@@ -128,6 +143,9 @@ export async function updateIncidentStatus(
 
     return updatedIncident;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new HttpException(404, 'Incident not found');
+    }
     if (error instanceof HttpException) {
       throw error;
     }
@@ -147,14 +165,10 @@ export async function updateIncidentSeverity(
       throw new HttpException(400, 'Incident ID is required');
     }
 
-    const existingIncident = await db.incident.findUnique({
+    await db.incident.findUniqueOrThrow({
       where: { id: incidentId },
       select: { incidentId: true },
     });
-
-    if (!existingIncident) {
-      throw new HttpException(404, 'Incident not found');
-    }
 
     const updatedIncident = await db.incident.update({
       where: { id: incidentId },
@@ -163,6 +177,9 @@ export async function updateIncidentSeverity(
 
     return updatedIncident;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new HttpException(404, 'Incident not found');
+    }
     if (error instanceof HttpException) {
       throw error;
     }

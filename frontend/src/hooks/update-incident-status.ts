@@ -16,9 +16,10 @@ export function useUpdateIncidentStatus() {
       incidentId: string;
       status: IncidentStatusType;
     }) => updateIncidentStatus(incidentId, status),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("Incident status updated successfully");
       queryClient.invalidateQueries({ queryKey: ["incidents"] });
+      queryClient.invalidateQueries({ queryKey: ["incident", variables.incidentId] });
     },
     onError(error) {
       const errorMsg =

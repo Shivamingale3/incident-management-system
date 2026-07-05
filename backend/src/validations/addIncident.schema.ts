@@ -1,4 +1,5 @@
 import z from 'zod';
+import stripHtml from '../utils/stripHtml.js';
 
 export const addIncidentValidationSchema = z.object({
   title: z
@@ -11,10 +12,31 @@ export const addIncidentValidationSchema = z.object({
     .nonoptional(),
   description: z
     .string('Description must be a string')
-    .min(5, 'Description is too short, must be at least 5 characters')
-    .max(500, 'Description is too long, must not exceed 500 characters')
-    .nullish(),
-
+    .nullish()
+    .transform((val) => (!val || stripHtml(val).length === 0 ? null : val))
+    .pipe(
+      z
+        .string()
+        .refine(
+          (val) => {
+            const textContent = stripHtml(val);
+            return textContent.length >= 5;
+          },
+          {
+            message: 'Description content is too short, must be at least 5 characters',
+          },
+        )
+        .refine(
+          (val) => {
+            const textContent = stripHtml(val);
+            return textContent.length <= 500;
+          },
+          {
+            message: 'Description content is too long, must not exceed 500 characters',
+          },
+        )
+        .nullable(),
+    ),
   service: z
     .string('Service must be a string')
     .min(1, 'Service name must be at least 1 characters')

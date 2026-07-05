@@ -1,16 +1,74 @@
 import Toolbar from "./toolbar";
 import IncidentsTable from "./incidents-table";
+import PaginationBar from "./pagination-bar";
 import type { Incident } from "@/types/incidents.types";
+import { useIncidentFilters } from "@/hooks/use-incident-filters";
+import useGetIncidents from "@/hooks/use-get-incidents";
 
 const Incidents = ({
   onSelectIncident,
 }: {
   onSelectIncident: (incident: Incident) => void;
 }) => {
+  const {
+    filters,
+    setSeverity,
+    setStatus,
+    setSearchQuery,
+    clearFilters,
+    pagination,
+    setPage,
+    setPageSize,
+    autoFetchPeriod,
+    setAutoFetchPeriod,
+    debouncedSearchQuery,
+  } = useIncidentFilters();
+
+  const { data, isLoading, isError, error, isFetching, refetch } =
+    useGetIncidents(
+      {
+        status: filters.status,
+        severity: filters.severity,
+        searchQuery: debouncedSearchQuery || null,
+        ...pagination,
+      },
+      {
+        refetchInterval: autoFetchPeriod
+          ? autoFetchPeriod.value * 1000
+          : false,
+      },
+    );
+
   return (
     <main className="px-5 pb-5 flex flex-col items-center gap-5 w-full flex-1 min-h-0">
-      <Toolbar />
-      <IncidentsTable onSelectIncident={onSelectIncident} />
+      <Toolbar
+        filters={filters}
+        onSeverityChange={setSeverity}
+        onStatusChange={setStatus}
+        onSearchChange={setSearchQuery}
+        onClearFilters={clearFilters}
+        autoFetchPeriod={autoFetchPeriod}
+        onAutoFetchChange={setAutoFetchPeriod}
+        onRefresh={() => refetch()}
+        isFetching={isFetching}
+      />
+      <IncidentsTable
+        incidents={data?.data ?? []}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        onRetry={() => refetch()}
+        onSelectIncident={onSelectIncident}
+      />
+      <PaginationBar
+        currentPage={data?.page ?? pagination.pageNo}
+        totalPages={data?.totalPages ?? 1}
+        pageSize={pagination.pageSize}
+        totalItems={data?.total ?? 0}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+        isFetching={isFetching}
+      />
     </main>
   );
 };

@@ -1,5 +1,6 @@
 import type { IncidentSeverity } from "@/constants/incidentSererity.constants";
 import type { IncidentStatus } from "@/constants/incidentStatus.constants";
+import type { getIncidentsByFilterValidationSchema } from "@/validations/getIncidentFilters.schema";
 import type { addIncidentValidationSchema } from "@/validations/incident.validation";
 import type z from "zod";
 
@@ -45,4 +46,34 @@ export type GetIncidentsByFilter = {
   totalPages: number;
   total: number;
   pageSize: number;
+};
+
+export type GetIncidentsByFilterParams = z.infer<
+  typeof getIncidentsByFilterValidationSchema
+>;
+
+/** Frontend-specific query params — uses native numbers, not string transforms */
+export type IncidentQueryParams = {
+  status?: IncidentStatusType | null;
+  severity?: IncidentSeverityType | null;
+  searchQuery?: string | null;
+  pageSize: number;
+  pageNo: number;
+};
+
+/** Pagination metadata returned by the API */
+export type PaginationMeta = {
+  page: number;
+  totalPages: number;
+  total: number;
+  pageSize: number;
+};
+
+export type IncidentsTableProps = {
+  incidents: Incident[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  onRetry: () => void;
+  onSelectIncident: (incident: Incident) => void;
 };

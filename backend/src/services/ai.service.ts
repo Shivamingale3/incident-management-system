@@ -18,6 +18,9 @@ export class AIService {
       const response = await gemini.models.generateContent({
         model: env.GEMINI_MODEL,
         contents: prompt,
+        config: {
+          responseMimeType: 'application/json',
+        },
       });
 
       return response.text ?? '';

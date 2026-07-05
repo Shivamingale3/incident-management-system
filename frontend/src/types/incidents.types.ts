@@ -76,3 +76,8 @@ export type IncidentsTableProps = {
   error: Error | null;
   onRetry: () => void;
 };
+
+export type IncidentSeverityRecommendation = {
+  recommendedSeverity: IncidentSeverityType;
+  reasons: string[];
+};

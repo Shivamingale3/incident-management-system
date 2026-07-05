@@ -23,6 +23,7 @@ import type {
   IncidentSeverityType,
   IncidentStatusType,
 } from "@/types/incidents.types";
+import { Button } from "../ui/button";
 
 function IncidentIdBanner({ incidentId }: { incidentId: string }) {
   return (
@@ -82,7 +83,8 @@ export function IncidentFormFields({
               />
             </FormControl>
             <FormDescription>
-              {FIELD_LABELS.description} is optional. Max 500 characters of content.
+              {FIELD_LABELS.description} is optional. Max 500 characters of
+              content.
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -108,23 +110,31 @@ export function IncidentFormFields({
         )}
       />
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 items-end">
         <FormField
           control={control}
           name="severity"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                {FIELD_LABELS.severity}
-                <span className="text-destructive ml-0.5">*</span>
+              <FormLabel className="flex items-center justify-between w-full mb-1.5">
+                <span>
+                  {FIELD_LABELS.severity}
+                  <span className="text-destructive ml-0.5">*</span>
+                </span>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="xs"
+                  className="h-6 rounded bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary border border-primary/20 transition-colors px-2 text-[10px] sm:text-xs font-semibold"
+                >
+                  ✨ Suggest Severity
+                </Button>
               </FormLabel>
               <FormControl>
                 <SelectIncidentSeverity
                   includeAll={false}
                   severity={(field.value as IncidentSeverityType) ?? null}
-                  setSeverity={(val) =>
-                    field.onChange(val ?? field.value)
-                  }
+                  setSeverity={(val) => field.onChange(val ?? field.value)}
                   disabled={isPending}
                 />
               </FormControl>
@@ -146,9 +156,7 @@ export function IncidentFormFields({
                 <SelectIncidentStatus
                   includeAll={false}
                   status={(field.value as IncidentStatusType) ?? null}
-                  setStatus={(val) =>
-                    field.onChange(val ?? field.value)
-                  }
+                  setStatus={(val) => field.onChange(val ?? field.value)}
                   disabled={isPending}
                 />
               </FormControl>

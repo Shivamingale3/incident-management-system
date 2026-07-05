@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { createRateLimiter } from '../middlewares/rateLimiting.middleware.js';
 import { validationMiddleware } from '../middlewares/validation.middleware.js';
 import { addIncidentValidationSchema } from '../validationSchemas/addIncident.schema.js';
 import {
@@ -15,6 +16,9 @@ import getIncidentByIdValidationSchema from '../validationSchemas/getIncidentByI
 
 const incidentRouter = Router();
 
+const createIncidentLimiter = createRateLimiter('CREATE_INCIDENT');
+const updateIncidentLimiter = createRateLimiter('UPDATE_INCIDENT');
+
 incidentRouter.get(
   '/filter',
   validationMiddleware(getIncidentsByFilterValidationSchema, 'query'),
@@ -29,18 +33,21 @@ incidentRouter.get(
 
 incidentRouter.patch(
   '/:incidentId/status/:status',
+  updateIncidentLimiter,
   validationMiddleware(updateIncidentStatusValidationSchema, 'params'),
   updateIncidentStatusController,
 );
 
 incidentRouter.patch(
   '/:incidentId/severity/:severity',
+  updateIncidentLimiter,
   validationMiddleware(updateIncidentSeverityValidationSchema, 'params'),
   updateIncidentSeverityController,
 );
 
 incidentRouter.post(
   '/',
+  createIncidentLimiter,
   validationMiddleware(addIncidentValidationSchema),
   addNewIncidentController,
 );

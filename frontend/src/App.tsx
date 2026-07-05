@@ -11,12 +11,10 @@ const App = () => {
   );
 
   return (
-    <>
-      <div className="main-page flex flex-col h-screen overflow-hidden">
-        <Navbar />
-        <Kpis />
-        <Incidents onSelectIncident={setSelectedIncident} />
-      </div>
+    <div className="main-page flex flex-col h-screen overflow-hidden">
+      <Navbar />
+      <Kpis />
+      <Incidents onSelectIncident={setSelectedIncident} />
       {selectedIncident && (
         <ViewIncident
           incident={selectedIncident}
@@ -24,7 +22,7 @@ const App = () => {
           onClose={() => setSelectedIncident(null)}
         />
       )}
-    </>
+    </div>
   );
 };
 

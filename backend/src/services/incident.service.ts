@@ -1,5 +1,10 @@
 import { db } from '../config/db.js';
-import type { AddNewIncidentData, GetIncidentsByFilter } from '../types/incident.types.js';
+import type {
+  AddNewIncidentData,
+  GetIncidentsByFilter,
+  IncidentSeverityType,
+  IncidentStatusType,
+} from '../types/incident.types.js';
 import { HttpException } from '../exceptions/http.exception.js';
 import { logger } from '../utils/logger.js';
 import { type Incident, type Prisma } from '@prisma/client';
@@ -95,5 +100,75 @@ export async function getAllIncidentsByFilter(
       `Error fetching incidents: ${error instanceof Error ? error.message : String(error)}`,
     );
     throw new HttpException(500, 'Internal Server Error: Failed to fetch incidents');
+  }
+}
+
+export async function updateIncidentStatus(
+  incidentId: string,
+  status: IncidentStatusType,
+): Promise<Incident> {
+  try {
+    if (!incidentId) {
+      throw new HttpException(400, 'Incident ID is required');
+    }
+
+    const existingIncident = await db.incident.findUnique({
+      where: { id: incidentId },
+      select: { incidentId: true },
+    });
+
+    if (!existingIncident) {
+      throw new HttpException(404, 'Incident not found');
+    }
+
+    const updatedIncident = await db.incident.update({
+      where: { id: incidentId },
+      data: { status },
+    });
+
+    return updatedIncident;
+  } catch (error) {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    logger.error(
+      `Error updating incident status: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw new HttpException(500, 'Internal Server Error: Failed to update incident status');
+  }
+}
+
+export async function updateIncidentSeverity(
+  incidentId: string,
+  severity: IncidentSeverityType,
+): Promise<Incident> {
+  try {
+    if (!incidentId) {
+      throw new HttpException(400, 'Incident ID is required');
+    }
+
+    const existingIncident = await db.incident.findUnique({
+      where: { id: incidentId },
+      select: { incidentId: true },
+    });
+
+    if (!existingIncident) {
+      throw new HttpException(404, 'Incident not found');
+    }
+
+    const updatedIncident = await db.incident.update({
+      where: { id: incidentId },
+      data: { severity },
+    });
+
+    return updatedIncident;
+  } catch (error) {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    logger.error(
+      `Error updating incident severity: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw new HttpException(500, 'Internal Server Error: Failed to update incident severity');
   }
 }

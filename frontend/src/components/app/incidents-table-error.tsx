@@ -1,6 +1,7 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, RotateCcw } from "lucide-react";
+import { AxiosError } from "axios";
 
 const IncidentsTableError = ({
   error,
@@ -9,6 +10,11 @@ const IncidentsTableError = ({
   error: Error | null;
   onRetry: () => void;
 }) => {
+  const errorMessage =
+    error instanceof AxiosError && error.response?.data.message
+      ? error.response.data.message
+      : "Something went wrong, try again!";
+
   return (
     <TableRow className="pointer-events-none">
       <TableCell colSpan={7} className="h-[50vh]">
@@ -16,9 +22,7 @@ const IncidentsTableError = ({
           <AlertCircle className="size-10 opacity-60" />
           <div className="text-center">
             <p className="text-base font-medium">Failed to load incidents</p>
-            <p className="text-sm opacity-70">
-              {error?.message ?? "An unexpected error occurred"}
-            </p>
+            <p className="text-sm opacity-70">{errorMessage}</p>
           </div>
           <Button
             variant="outline"

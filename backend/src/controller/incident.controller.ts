@@ -1,8 +1,17 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { AddNewIncidentData } from '../types/incident.types.js';
-import { createNewIncident, getAllIncidentsByFilter } from '../services/incident.service.js';
+import type {
+  AddNewIncidentData,
+  GetIncidentsByFilter,
+  IncidentSeverityType,
+  IncidentStatusType,
+} from '../types/incident.types.js';
+import {
+  createNewIncident,
+  getAllIncidentsByFilter,
+  updateIncidentSeverity,
+  updateIncidentStatus,
+} from '../services/incident.service.js';
 import { ApiResponse } from '../lib/apiResponse.js';
-import { getIncidentsByFilterValidationSchema } from '../validations/getIncidentFilters.schema.js';
 
 export async function addNewIncidentController(
   request: Request,
@@ -24,9 +33,37 @@ export async function getAllIncidentsByFilterController(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const filters = getIncidentsByFilterValidationSchema.parse(request.query);
+    const filters = request.query as unknown as GetIncidentsByFilter;
     const result = await getAllIncidentsByFilter(filters);
     response.status(200).json(ApiResponse.success('Incidents fetched successfully', result));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateIncidentStatusController(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const { incidentId, status } = request.params;
+    await updateIncidentStatus(incidentId as string, status as IncidentStatusType);
+    response.status(200).json(ApiResponse.success('Incident status updated successfully', null));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateIncidentSeverityController(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const { incidentId, severity } = request.params;
+    await updateIncidentSeverity(incidentId as string, severity as IncidentSeverityType);
+    response.status(200).json(ApiResponse.success('Incident status updated successfully', null));
   } catch (error) {
     next(error);
   }

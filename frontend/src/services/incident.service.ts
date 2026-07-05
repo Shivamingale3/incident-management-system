@@ -4,6 +4,8 @@ import type {
   AddNewIncident,
   GetIncidentsByFilter,
   IncidentQueryParams,
+  IncidentSeverityType,
+  IncidentStatusType,
 } from "@/types/incidents.types";
 
 export async function createIncident(payload: AddNewIncident): Promise<void> {
@@ -38,4 +40,18 @@ export async function getIncidentsByFilter(
     },
   );
   return response.data.data;
+}
+
+export async function updateIncidentStatus(
+  incidentId: string,
+  status: IncidentStatusType,
+): Promise<void> {
+  await api.patch(`/incident/${incidentId}/status/${status}`);
+}
+
+export async function updateIncidentSeverity(
+  incidentId: string,
+  severity: IncidentSeverityType,
+): Promise<void> {
+  await api.patch(`/incident/${incidentId}/severity/${severity}`);
 }

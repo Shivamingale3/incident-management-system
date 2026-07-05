@@ -56,11 +56,7 @@ export async function getAllIncidentsByFilter(
   if (searchQuery) {
     const searchTerm = searchQuery.trim();
     conditions.push({
-      OR: [
-        { title: { contains: searchTerm } },
-        { description: { contains: searchTerm } },
-        { incidentId: { contains: searchTerm } },
-      ],
+      OR: [{ title: { contains: searchTerm } }, { incidentId: { contains: searchTerm } }],
     });
   }
 

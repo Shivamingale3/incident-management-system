@@ -20,16 +20,16 @@ const IncidentTableRow = ({
       className="cursor-pointer"
       onClick={() => onSelect(incident)}
     >
-      <TableCell>{incident.id}</TableCell>
+      <TableCell>{incident.incidentId}</TableCell>
       <TableCell>{incident.title}</TableCell>
-      <TableCell>{incident.service}</TableCell>
+      <TableCell>{incident.service ?? "-"}</TableCell>
       <TableCell>
         <SeverityBadge severity={incident.severity as IncidentSeverityType} />
       </TableCell>
       <TableCell>
         <StatusBadge status={incident.status as IncidentStatusType} />
       </TableCell>
-      <TableCell>{incident.assignee}</TableCell>
+      <TableCell>{incident.assignee ?? "-"}</TableCell>
       <TableCell>
         {formatIncidentCreatedAtToLocale(incident.createdAt)}
       </TableCell>

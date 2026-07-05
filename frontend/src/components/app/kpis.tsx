@@ -1,31 +1,33 @@
+import useGetKpisForDashboard from "@/hooks/use-get-kpis-for-dashboard";
 import KPIcard from "./kpi-card";
+import KpiCardSkeleton from "./skeletons/kpi-card-skeleton";
 
 const Kpis = () => {
-  const stats = [
-    {
-      title: "TOTAL INCIDENTS",
-      value: 120,
-      subtitle: "Currently tracked",
-    },
-    {
-      title: "OPEN INCIDENTS",
-      value: 120,
-      subtitle: "Needs attention",
-    },
-    {
-      title: "CRITICAL INCIDENTS",
-      value: 120,
-      subtitle: "Immediate action required",
-    },
-    {
-      title: "RESOLVED INCIDENTS",
-      value: 120,
-      subtitle: "Resolved in last 24 hours",
-    },
-  ];
+  const { data: kpis, isLoading, error } = useGetKpisForDashboard();
+
+  if (isLoading) {
+    return (
+      <section className="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 shrink-0">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <KpiCardSkeleton key={index} />
+        ))}
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 shrink-0">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <KpiCardSkeleton key={index} />
+        ))}
+      </section>
+    );
+  }
+
   return (
     <section className="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 shrink-0">
-      {stats.map((stat) => (
+      {kpis.map((stat) => (
         <KPIcard
           key={stat.title}
           title={stat.title}

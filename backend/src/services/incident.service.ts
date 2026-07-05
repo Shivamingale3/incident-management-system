@@ -274,3 +274,25 @@ export async function getCachedIncidentAiInsights(
     throw new HttpException(500, 'Internal Server Error: Failed to get incident AI insights');
   }
 }
+
+export async function getIncidentKpis(): Promise<{
+  total: number;
+  open: number;
+  critical: number;
+  resolved: number;
+}> {
+  try {
+    const [total, open, critical, resolved] = await Promise.all([
+      db.incident.count(),
+      db.incident.count({ where: { status: IncidentStatus.OPEN } }),
+      db.incident.count({ where: { severity: IncidentSeverity.CRITICAL } }),
+      db.incident.count({ where: { status: IncidentStatus.RESOLVED } }),
+    ]);
+    return { total, open, critical, resolved };
+  } catch (error) {
+    logger.error(
+      `Error getting incident KPIs: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw new HttpException(500, 'Internal Server Error: Failed to get incident KPIs');
+  }
+}

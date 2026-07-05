@@ -97,3 +97,15 @@ export type IncidentAiInsights = {
   recommendedActions: string[];
   confidence: "HIGH" | "MEDIUM" | "LOW";
 };
+
+export type KPIItem = {
+  title: string;
+  value: number;
+  subtitle: string;
+};
+
+export type SuggestSeverityParams = {
+  title: string;
+  description: string | null;
+  service: string | null;
+};

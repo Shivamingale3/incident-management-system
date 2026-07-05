@@ -7,6 +7,7 @@ import type {
   IncidentQueryParams,
   IncidentSeverityRecommendation,
   IncidentStatusType,
+  KPIItem,
 } from "@/types/incidents.types";
 
 export async function createIncident(payload: AddNewIncident): Promise<void> {
@@ -83,5 +84,10 @@ export async function getSuggestedIncidentSeverity({
     "/ai/incident/suggest-severity",
     body,
   );
+  return response.data.data;
+}
+
+export async function getKpisForDashboard(): Promise<KPIItem[]> {
+  const response = await api.get<ApiResponse<KPIItem[]>>("/incident/kpis");
   return response.data.data;
 }

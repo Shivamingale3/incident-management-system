@@ -9,11 +9,24 @@ const KPIcard = ({
   value: number;
   subtitle: string;
 }) => {
+  const getColour = () => {
+    switch (title) {
+      case "ACTIVE INCIDENTS":
+        return "text-white";
+      case "CRITICAL INCIDENTS":
+        return "text-red-500";
+      case "RESOLVED INCIDENTS":
+        return "text-green-500";
+      default:
+        return "text-white";
+    }
+  };
+
   return (
     <Card className="p-4">
       <span className="font-semibold text-lg">{title}</span>
       <div className="flex justify-between items-end">
-        <h2 className="text-4xl font-bold">{value}</h2>
+        <h2 className={`text-4xl font-bold ${getColour()} `}>{value}</h2>
         <h1 className="text-[14px] font-medium">{subtitle}</h1>
       </div>
     </Card>

@@ -6,6 +6,7 @@ import {
   addNewIncidentController,
   getAllIncidentsByFilterController,
   getIncidentByIdController,
+  getKpisController,
   updateIncidentSeverityController,
   updateIncidentStatusController,
 } from '../controller/incident.controller.js';
@@ -31,6 +32,8 @@ incidentRouter.get(
   validationMiddleware(getIncidentsByFilterValidationSchema, 'query'),
   getAllIncidentsByFilterController,
 );
+
+incidentRouter.get('/kpis', getKpisController);
 
 incidentRouter.get(
   '/:id',

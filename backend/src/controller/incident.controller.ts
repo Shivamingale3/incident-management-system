@@ -9,10 +9,12 @@ import {
   createNewIncident,
   getAllIncidentsByFilter,
   getIncidentById,
+  getIncidentKpis,
   updateIncidentSeverity,
   updateIncidentStatus,
 } from '../services/incident.service.js';
 import { ApiResponse } from '../lib/apiResponse.js';
+import { getKpisConstant } from '../constants/kpi.constants.js';
 
 export async function getIncidentByIdController(
   request: Request,
@@ -79,6 +81,20 @@ export async function updateIncidentSeverityController(
     const { incidentId, severity } = request.params;
     await updateIncidentSeverity(incidentId as string, severity as IncidentSeverityType);
     response.status(200).json(ApiResponse.success('Incident status updated successfully', null));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getKpisController(
+  _request: Request,
+  response: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const { total, open, critical, resolved } = await getIncidentKpis();
+    const kpis = getKpisConstant(total, open, critical, resolved);
+    response.json(ApiResponse.success('KPIs fetched successfully', kpis));
   } catch (error) {
     next(error);
   }

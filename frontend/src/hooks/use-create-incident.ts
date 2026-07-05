@@ -11,7 +11,10 @@ export function useCreateIncident() {
     mutationFn: createIncident,
     onSuccess: () => {
       toast.success("Incident created successfully");
-      queryClient.invalidateQueries({ queryKey: ["incidents"] });
+      queryClient.invalidateQueries({
+        queryKey: ["incidents"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["dashboard-kpi"] });
     },
     onError(error) {
       const errorMsg =

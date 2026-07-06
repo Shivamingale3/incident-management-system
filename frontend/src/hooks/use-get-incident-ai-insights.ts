@@ -7,5 +7,6 @@ export default function useGetIncidentAiInsights(incidentId: string) {
     queryKey: ["incident-ai-insights", incidentId],
     queryFn: () => getIncidentAiInsights(incidentId),
     enabled: false,
+    retry: false,
   });
 }

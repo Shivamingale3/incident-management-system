@@ -11,6 +11,12 @@ import { morganStream } from './utils/logger.js';
 
 export const app = express();
 
+// nginx (the frontend container) fronts this backend and sets
+// X-Forwarded-* headers. Without `trust proxy`, express-rate-limit's
+// xForwardedForHeader validation crashes the route on every reverse-proxied
+// request. `1` trusts exactly one hop (the nginx container).
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(cors());
 

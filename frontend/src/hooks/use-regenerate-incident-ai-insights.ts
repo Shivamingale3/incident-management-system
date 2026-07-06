@@ -10,6 +10,7 @@ export function useRegenerateIncidentAiInsights() {
   return useMutation({
     mutationFn: (incidentId: string) =>
       regenerateIncidentAiInsights(incidentId),
+    retry: false,
     onSuccess: (data: IncidentAiInsights, incidentId) => {
       toast.success("AI insights regenerated successfully.");
       queryClient.setQueryData(["incident-ai-insights", incidentId], data);

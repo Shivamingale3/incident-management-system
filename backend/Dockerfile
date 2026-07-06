@@ -32,4 +32,4 @@ COPY --from=builder /app/backend/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/backend/package.json ./package.json
 
 EXPOSE 5000
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/seed.js && node dist/server.js"]

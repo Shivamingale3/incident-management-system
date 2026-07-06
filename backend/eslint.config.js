@@ -78,10 +78,7 @@ export default tseslint.config(
   // which is fine — they're exercised via `tsc --noEmit -p tsconfig.test.json`.
   {
     files: ['tests/**/*.test.ts'],
-    extends: [
-      ...tseslint.configs.recommended,
-      vitestPlugin.configs.recommended,
-    ],
+    extends: [...tseslint.configs.recommended, vitestPlugin.configs.recommended],
     rules: {
       'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'off',

@@ -49,8 +49,8 @@ const Toolbar = ({
 
   return (
     <div className="w-full flex flex-wrap justify-between items-center gap-y-3">
-      <div className="w-full lg:w-auto flex justify-center items-center flex-col lg:flex-row lg:gap-5 space-y-5">
-        <InputGroup className="w-full lg:w-[300px]">
+      <div className="w-full lg:w-auto flex justify-center items-center flex-col lg:flex-row gap-5">
+        <InputGroup className="w-full lg:w-[300px] flex ">
           <InputGroupInput
             value={filters.searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}

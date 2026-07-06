@@ -14,11 +14,13 @@ describe('envSchema', () => {
       APP_PORT: '5000',
       APP_ENV: 'development',
       DATABASE_URL: 'file:./dev.db',
-      GEMINI_API_KEY: 'k',
-      GEMINI_MODEL: 'gemini-2.0-flash',
+      AI_PROVIDER: 'groq',
+      GROQ_API_KEY: 'k',
+      GROQ_MODEL: 'llama-3.3-70b-versatile',
     });
     expect(result.APP_PORT).toBe(5000); // coerced to number
     expect(result.APP_ENV).toBe('development');
+    expect(result.AI_PROVIDER).toBe('groq');
   });
 
   it('coerces string APP_PORT to number', () => {
@@ -26,8 +28,7 @@ describe('envSchema', () => {
       APP_PORT: '3000',
       APP_ENV: 'test',
       DATABASE_URL: 'file:./t.db',
-      GEMINI_API_KEY: 'k',
-      GEMINI_MODEL: 'm',
+      GROQ_API_KEY: 'k',
     });
     expect(result.APP_PORT).toBe(3000);
     expect(typeof result.APP_PORT).toBe('number');
@@ -35,30 +36,111 @@ describe('envSchema', () => {
 
   it('rejects unknown APP_ENV value', () => {
     const result = envSchema.safeParse({
+      APP_PORT: 5000,
       APP_ENV: 'staging',
       DATABASE_URL: 'file:./t.db',
-      GEMINI_API_KEY: 'k',
-      GEMINI_MODEL: 'm',
-    });
-    expect(result.success).toBe(false);
-  });
-
-  it('rejects missing GEMINI_API_KEY', () => {
-    const result = envSchema.safeParse({
-      APP_ENV: 'development',
-      DATABASE_URL: 'file:./t.db',
-      GEMINI_MODEL: 'm',
+      GROQ_API_KEY: 'k',
     });
     expect(result.success).toBe(false);
   });
 
   it('rejects missing DATABASE_URL', () => {
     const result = envSchema.safeParse({
+      APP_PORT: 5000,
       APP_ENV: 'development',
-      GEMINI_API_KEY: 'k',
-      GEMINI_MODEL: 'm',
+      GROQ_API_KEY: 'k',
     });
     expect(result.success).toBe(false);
+  });
+
+  it('rejects unknown AI_PROVIDER value', () => {
+    const result = envSchema.safeParse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      AI_PROVIDER: 'openai',
+      GROQ_API_KEY: 'k',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('defaults AI_PROVIDER to groq when unset', () => {
+    const result = envSchema.parse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      GROQ_API_KEY: 'k',
+    });
+    expect(result.AI_PROVIDER).toBe('groq');
+  });
+
+  it('defaults GROQ_MODEL to llama-3.3-70b-versatile when unset', () => {
+    const result = envSchema.parse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      GROQ_API_KEY: 'k',
+    });
+    expect(result.GROQ_MODEL).toBe('llama-3.3-70b-versatile');
+  });
+
+  it('defaults GEMINI_MODEL to gemini-2.0-flash when unset', () => {
+    const result = envSchema.parse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      AI_PROVIDER: 'gemini',
+      GEMINI_API_KEY: 'k',
+    });
+    expect(result.GEMINI_MODEL).toBe('gemini-2.0-flash');
+  });
+
+  it('rejects missing GROQ_API_KEY when AI_PROVIDER=groq', () => {
+    const result = envSchema.safeParse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      AI_PROVIDER: 'groq',
+    });
+    expect(result.success).toBe(false);
+    const issues = result.success ? [] : result.error.issues;
+    expect(issues.some((i) => i.path.includes('GROQ_API_KEY'))).toBe(true);
+    expect(issues.some((i) => /GROQ_API_KEY is required/i.test(i.message))).toBe(true);
+  });
+
+  it('rejects missing GEMINI_API_KEY when AI_PROVIDER=gemini', () => {
+    const result = envSchema.safeParse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      AI_PROVIDER: 'gemini',
+    });
+    expect(result.success).toBe(false);
+    const issues = result.success ? [] : result.error.issues;
+    expect(issues.some((i) => i.path.includes('GEMINI_API_KEY'))).toBe(true);
+    expect(issues.some((i) => /GEMINI_API_KEY is required/i.test(i.message))).toBe(true);
+  });
+
+  it('accepts Gemini env when AI_PROVIDER=gemini and GEMINI_API_KEY is set', () => {
+    const result = envSchema.safeParse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      AI_PROVIDER: 'gemini',
+      GEMINI_API_KEY: 'k',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts Groq env when AI_PROVIDER=groq and GROQ_API_KEY is set', () => {
+    const result = envSchema.safeParse({
+      APP_PORT: 5000,
+      APP_ENV: 'development',
+      DATABASE_URL: 'file:./t.db',
+      AI_PROVIDER: 'groq',
+      GROQ_API_KEY: 'k',
+    });
+    expect(result.success).toBe(true);
   });
 });
 

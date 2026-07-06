@@ -8,8 +8,8 @@ import type { IncidentSeverityType, IncidentStatusType } from '../types/incident
 /**
  * Creates an AbortController bound to the request's 'close' event, so when
  * the upstream client disconnects (nginx timeout, user navigation, etc.) the
- * in-flight Gemini call is cancelled — preventing orphaned requests that
- * would otherwise consume Google's rate-limit bucket and trigger 429s on
+ * in-flight AI call is cancelled — preventing orphaned requests that would
+ * otherwise consume the provider's rate-limit bucket and trigger 429s on
  * the user's next attempt.
  */
 function createRequestAbortController(req: Request): AbortController {

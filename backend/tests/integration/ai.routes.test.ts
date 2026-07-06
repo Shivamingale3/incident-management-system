@@ -2,39 +2,58 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 
 // vi.hoisted makes the mock fn available to the hoisted vi.mock factory.
-const generateContentMock = vi.hoisted(() => vi.fn());
+// Single `generateMock` serves BOTH providers since both adapter mocks
+// route through it — whichever provider the factory selects at runtime,
+// `generate` returns whatever the test staged on this fn.
+const generateMock = vi.hoisted(() => vi.fn());
 
-// Mock the rate limiter (hoisted)
+// Mock both provider adapters so no real network calls ever happen.
+// Each mock class exposes the AIProvider shape (`generate`, `name`).
+vi.mock('../../src/config/providers/gemini.provider.js', () => ({
+  GeminiProvider: class {
+    readonly name = 'gemini' as const;
+    generate = generateMock;
+  },
+}));
+vi.mock('../../src/config/providers/groq.provider.js', () => ({
+  GroqProvider: class {
+    readonly name = 'groq' as const;
+    generate = generateMock;
+  },
+}));
+
+// Mock the rate limiter (hoisted) — keeps integration tests focused on
+// AI-flow behavior, not throttling.
 vi.mock('../../src/middlewares/rateLimiting.middleware.js', () => ({
   createRateLimiter: () => (_req: unknown, _res: unknown, next: () => void) => next(),
   globalRateLimiter: (_req: unknown, _res: unknown, next: () => void) => next(),
 }));
 
-// Mock the Gemini client so we never make real network calls.
-// The shape must match the bits of `@google/genai`'s GoogleGenAI used by
-// ai.service.ts: `gemini.models.generateContent({ model, contents })`.
-vi.mock('../../src/config/gemini.config.js', () => ({
-  default: {
-    models: {
-      generateContent: generateContentMock,
-    },
-  },
-}));
-
+import { HttpException } from '../../src/exceptions/http.exception.js';
 import { app } from '../../src/app.js';
 import { db, truncateIncidents } from '../helpers/db.ts';
 
-describe('AI routes — HTTP integration (Gemini mocked)', () => {
+/**
+ * Integration tests for the AI routes flow.
+ *
+ * The integration boundary is `AIService.generate(prompt, signal)`; the
+ * actual provider (Gemini or Groq) is mocked here so no real network call
+ * is made. Provider-selection logic (env → factory → adapter) is covered
+ * by `tests/unit/ai.provider.factory.test.ts`. Provider-specific error
+ * mapping (429 / 502 / 499) is covered by the dedicated provider-unit
+ * tests in the same folder.
+ */
+describe('AI routes — HTTP integration (provider mocked)', () => {
   beforeEach(async () => {
     await truncateIncidents();
-    generateContentMock.mockReset();
+    generateMock.mockReset();
   });
 
   describe('POST /api/ai/incident/suggest-severity', () => {
-    it('returns 200 with severity + reason when Gemini returns valid JSON', async () => {
-      generateContentMock.mockResolvedValueOnce({
-        text: '{"severity":"HIGH","reason":"prod db outage, high impact"}',
-      });
+    it('returns 200 with severity + reason when provider returns valid JSON', async () => {
+      generateMock.mockResolvedValueOnce(
+        '{"severity":"HIGH","reason":"prod db outage, high impact"}',
+      );
 
       const res = await request(app).post('/api/ai/incident/suggest-severity').send({
         title: 'DB outage',
@@ -48,7 +67,7 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
         severity: 'HIGH',
         reason: 'prod db outage, high impact',
       });
-      expect(generateContentMock).toHaveBeenCalledTimes(1);
+      expect(generateMock).toHaveBeenCalledTimes(1);
     });
 
     it('returns 400 when validation fails (missing title)', async () => {
@@ -58,13 +77,17 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBe(false);
-      expect(generateContentMock).not.toHaveBeenCalled();
+      expect(generateMock).not.toHaveBeenCalled();
     });
 
-    it('returns 502 when Gemini throws a non-known error', async () => {
-      // A plain Error is not an ApiError instance, so aiService.generate
-      // rethrows it raw → errorHandler converts to 500.
-      generateContentMock.mockRejectedValueOnce(new Error('network down'));
+    it('surfaces HttpException(429) as a structured rate-limit response', async () => {
+      // Provider adapters throw HttpException for known upstream failures;
+      // the global error handler maps the statusCode straight through to
+      // the JSON response. Proves the error-mapping path end-to-end
+      // without depending on provider-specific exception classes.
+      generateMock.mockRejectedValueOnce(
+        new HttpException(429, 'AI service rate limit exceeded. Please try again later.'),
+      );
 
       const res = await request(app).post('/api/ai/incident/suggest-severity').send({
         title: 'DB outage',
@@ -72,8 +95,23 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
         service: 'postgres',
       });
 
-      // aiService.generate rethrows non-ApiError errors raw; errorHandler
-      // maps those to 500.
+      expect(res.status).toBe(429);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toMatch(/rate limit/i);
+    });
+
+    it('rethrows unknown errors raw (errorHandler surfaces as 500)', async () => {
+      // A plain Error is not a recognized provider APIError subclass, so
+      // the adapter rethrows it raw — the global handler maps that to 500.
+      generateMock.mockRejectedValueOnce(new Error('network down'));
+
+      const res = await request(app).post('/api/ai/incident/suggest-severity').send({
+        title: 'DB outage',
+        description: '<p>db unreachable</p>',
+        service: 'postgres',
+      });
+
+      // Allow 502 in case the handler wrapping changes later.
       expect([500, 502]).toContain(res.status);
       expect(res.body.success).toBe(false);
     });
@@ -88,7 +126,7 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
     });
 
     it('returns 200 with cached insights when they exist in DB', async () => {
-      // Seed an incident directly to control AI insight columns
+      // Seed an incident directly to control the AI insight columns.
       const created = await db.incident.create({
         data: {
           incidentId: 'INC-CACHED-1',
@@ -110,11 +148,11 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
       expect(res.body.data.summary).toBe('cached summary');
       expect(res.body.data.possibleCauses).toEqual(['cause1', 'cause2']);
       expect(res.body.data.recommendedActions).toEqual(['action1', 'action2']);
-      // Gemini must not have been called because cached insights exist.
-      expect(generateContentMock).not.toHaveBeenCalled();
+      // Provider must not have been called because cached insights exist.
+      expect(generateMock).not.toHaveBeenCalled();
     });
 
-    it('calls Gemini and returns 200 with fresh insights when cache is empty', async () => {
+    it('calls the provider and returns 200 with fresh insights when cache is empty', async () => {
       const created = await db.incident.create({
         data: {
           incidentId: 'INC-FRESH-1',
@@ -126,21 +164,21 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
         },
       });
 
-      generateContentMock.mockResolvedValueOnce({
-        text: JSON.stringify({
+      generateMock.mockResolvedValueOnce(
+        JSON.stringify({
           summary: 'fresh summary',
           possibleCauses: ['c1', 'c2', 'c3'],
           recommendedActions: ['a1', 'a2', 'a3'],
           confidence: 'MEDIUM',
         }),
-      });
+      );
 
       const res = await request(app).get(`/api/ai/incident/${created.id}/insights`);
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
       expect(res.body.data.summary).toBe('fresh summary');
-      expect(generateContentMock).toHaveBeenCalledTimes(1);
+      expect(generateMock).toHaveBeenCalledTimes(1);
 
       // Verify insights were persisted
       const updated = await db.incident.findUnique({ where: { id: created.id } });
@@ -155,7 +193,7 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
 
       expect(res.status).toBe(404);
       expect(res.body.message).toBe('Incident not found');
-      expect(generateContentMock).not.toHaveBeenCalled();
+      expect(generateMock).not.toHaveBeenCalled();
     });
 
     it('regenerates insights and persists them', async () => {
@@ -173,21 +211,21 @@ describe('AI routes — HTTP integration (Gemini mocked)', () => {
         },
       });
 
-      generateContentMock.mockResolvedValueOnce({
-        text: JSON.stringify({
+      generateMock.mockResolvedValueOnce(
+        JSON.stringify({
           summary: 'new summary',
           possibleCauses: ['new1', 'new2'],
           recommendedActions: ['act1', 'act2'],
           confidence: 'HIGH',
         }),
-      });
+      );
 
       const res = await request(app).put(`/api/ai/incident/${created.id}/insights/regenerate`);
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
       expect(res.body.data.summary).toBe('new summary');
-      expect(generateContentMock).toHaveBeenCalledTimes(1);
+      expect(generateMock).toHaveBeenCalledTimes(1);
 
       const updated = await db.incident.findUnique({ where: { id: created.id } });
       expect(updated?.summary).toBe('new summary');

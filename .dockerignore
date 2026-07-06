@@ -7,10 +7,11 @@
 **/dev.db
 **/*.sqlite
 **/*.sqlite-journal
+**/tests
+**/coverage
 .git
 .husky
 **/*.md
 **/.vscode
 **/.idea
-**/coverage
 **/*.log

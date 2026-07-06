@@ -6,3 +6,4 @@ backend/dev.db
 .env
 .env.*
 !.env.example
+frontend/coverage

@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
+import vitestPlugin from '@vitest/eslint-plugin';
 
 export default tseslint.config(
   // Global ignores
@@ -68,6 +69,27 @@ export default tseslint.config(
 
       // --- Console ---
       'no-console': 'error',
+    },
+  },
+
+  // Test files (permissive — testing may use console, any, etc.)
+  // No projectService here so test files don't need to be in any tsconfig
+  // project. Trade-off: type-checked linting rules don't apply to test files,
+  // which is fine — they're exercised via `tsc --noEmit -p tsconfig.test.json`.
+  {
+    files: ['tests/**/*.test.ts'],
+    extends: [
+      ...tseslint.configs.recommended,
+      vitestPlugin.configs.recommended,
+    ],
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+      '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
 

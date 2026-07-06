@@ -4,7 +4,7 @@ import Navbar from "./components/app/navbar";
 
 const App = () => {
   return (
-    <div className="main-page flex flex-col h-screen overflow-hidden">
+    <div className="main-page flex flex-col min-h-screen lg:h-screen lg:overflow-hidden">
       <Navbar />
       <Kpis />
       <Incidents />

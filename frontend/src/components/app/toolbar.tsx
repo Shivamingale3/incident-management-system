@@ -48,8 +48,8 @@ const Toolbar = ({
     filters.searchQuery !== "";
 
   return (
-    <div className="w-full flex justify-between items-center">
-      <div className="flex justify-center items-center flex-col lg:flex-row lg:gap-5">
+    <div className="w-full flex flex-wrap justify-between items-center gap-y-3">
+      <div className="w-full lg:w-auto flex justify-center items-center flex-col lg:flex-row lg:gap-5 space-y-5">
         <InputGroup className="w-full lg:w-[300px]">
           <InputGroupInput
             value={filters.searchQuery}
@@ -60,7 +60,7 @@ const Toolbar = ({
             <Search />
           </InputGroupAddon>
         </InputGroup>
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-center items-center gap-2 flex-wrap">
           <SelectIncidentSeverity
             severity={filters.severity}
             setSeverity={onSeverityChange}
@@ -71,18 +71,22 @@ const Toolbar = ({
           />
         </div>
       </div>
-      <div className="flex justify-center items-center gap-2">
+      <div className="w-full lg:w-auto flex justify-center lg:justify-end items-center gap-2">
         <SelectAutoFetch
           autoFetchPeriod={autoFetchPeriod}
           setAutoFetchPeriod={onAutoFetchChange}
         />
         {hasActiveFilters && (
-          <Button variant="outline" onClick={onClearFilters}>
+          <Button
+            variant="outline"
+            onClick={onClearFilters}
+            aria-label="Clear Filters"
+          >
             <X />
-            Clear Filters
+            <span className="hidden sm:inline">Clear Filters</span>
           </Button>
         )}
-        <Button onClick={onRefresh} disabled={isFetching}>
+        <Button onClick={onRefresh} disabled={isFetching} aria-label="Refresh">
           <RefreshCcw
             className={`transition-transform ${isFetching ? "animate-spin" : ""}`}
           />

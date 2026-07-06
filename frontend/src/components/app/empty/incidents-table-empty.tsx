@@ -15,10 +15,12 @@ const IncidentsTableEmpty = () => {
         <Empty className="h-full flex flex-col justify-center">
           <EmptyHeader className="gap-2">
             <EmptyMedia>
-              <GalleryThumbnailsIcon className="w-12 h-12" />
+              <GalleryThumbnailsIcon className="w-8 h-8 sm:w-12 sm:h-12" />
             </EmptyMedia>
-            <EmptyTitle className="text-xl">No Incidents Yet</EmptyTitle>
-            <EmptyDescription className="text-lg">
+            <EmptyTitle className="text-base sm:text-xl">
+              No Incidents Yet
+            </EmptyTitle>
+            <EmptyDescription className="text-sm sm:text-lg">
               No Incidents found everything good. Click on top-right Create
               Incident button to create an incident.
             </EmptyDescription>

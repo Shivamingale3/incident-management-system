@@ -19,10 +19,12 @@ const IncidentsTableError = ({
     <TableRow className="pointer-events-none">
       <TableCell colSpan={7} className="h-[50vh]">
         <div className="flex flex-col items-center justify-center gap-3 text-destructive">
-          <AlertCircle className="size-10 opacity-60" />
+          <AlertCircle className="size-8 sm:size-10 opacity-60" />
           <div className="text-center">
-            <p className="text-base font-medium">Failed to load incidents</p>
-            <p className="text-sm opacity-70">{errorMessage}</p>
+            <p className="text-sm sm:text-base font-medium">
+              Failed to load incidents
+            </p>
+            <p className="text-xs sm:text-sm opacity-70">{errorMessage}</p>
           </div>
           <Button
             variant="outline"
@@ -31,6 +33,7 @@ const IncidentsTableError = ({
               e.stopPropagation();
               onRetry();
             }}
+            aria-label="Retry"
             className="pointer-events-auto mt-1"
           >
             <RotateCcw className="size-4" />

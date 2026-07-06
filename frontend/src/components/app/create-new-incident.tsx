@@ -16,9 +16,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Form } from "@/components/ui/form";
 import { addIncidentValidationSchema } from "@/validations/incident.validation";
 import { useCreateIncident } from "@/hooks/use-create-incident";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { IncidentFormFields } from "@/components/app/incident-form-fields";
 import { DEFAULT_VALUES } from "@/constants/create-incident-form.constants";
 import incidentIdGenerator from "@/utils/generateIncidentId";
@@ -167,70 +177,135 @@ const CreateNewIncident = () => {
     [form, mutate, isPending, resetAndClose],
   );
 
+  // md breakpoint matches Tailwind's md (48rem / 768px).
+  // Below md we render a bottom Sheet (native mobile feel); at md+ a centered Dialog.
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const formContent = (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
+        <IncidentFormFields incidentId={incidentId} isPending={isPending} />
+
+        {isDesktop ? (
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
+                <>
+                  <LoaderCircle className="animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Create Incident"
+              )}
+            </Button>
+          </DialogFooter>
+        ) : (
+          <SheetFooter className="flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
+                <>
+                  <LoaderCircle className="animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Create Incident"
+              )}
+            </Button>
+          </SheetFooter>
+        )}
+      </form>
+    </Form>
+  );
+
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogTrigger asChild>
+          <Button
+            aria-label="New Incident"
+            className="flex items-center py-4 sm:py-5"
+          >
+            <Plus />
+            <span className="hidden sm:inline">New Incident</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent
+          className="w-full max-w-[calc(100%-2rem)] md:max-w-5xl"
+          showCloseButton={false}
+          onPointerDownOutside={handlePointerDownOutside}
+          onEscapeKeyDown={handleEscapeKeyDown}
+          onInteractOutside={handleInteractOutside}
+        >
+          <div className="flex items-center justify-between">
+            <DialogHeader>
+              <DialogTitle>Create New Incident</DialogTitle>
+              <DialogDescription>
+                Fill in the details below to create a new incident.
+              </DialogDescription>
+            </DialogHeader>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={handleClose}
+              className="shrink-0"
+            >
+              <XIcon />
+              <span className="sr-only">Close</span>
+            </Button>
+          </div>
+          {formContent}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="flex items-center py-5">
+    <Sheet open={open} onOpenChange={handleOpenChange}>
+      <SheetTrigger asChild>
+        <Button
+          aria-label="New Incident"
+          className="flex items-center py-4 sm:py-5"
+        >
           <Plus />
-          New Incident
+          <span className="hidden sm:inline">New Incident</span>
         </Button>
-      </DialogTrigger>
-      <DialogContent
-        className="w-full max-w-5xl"
-        showCloseButton={false}
+      </SheetTrigger>
+      <SheetContent
+        side="bottom"
+        showCloseButton={true}
+        className="flex max-h-[90vh] flex-col gap-4 p-4"
         onPointerDownOutside={handlePointerDownOutside}
         onEscapeKeyDown={handleEscapeKeyDown}
         onInteractOutside={handleInteractOutside}
       >
-        <div className="flex items-center justify-between">
-          <DialogHeader>
-            <DialogTitle>Create New Incident</DialogTitle>
-            <DialogDescription>
-              Fill in the details below to create a new incident.
-            </DialogDescription>
-          </DialogHeader>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={handleClose}
-            className="shrink-0"
-          >
-            <XIcon />
-            <span className="sr-only">Close</span>
-          </Button>
-        </div>
-
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <IncidentFormFields incidentId={incidentId} isPending={isPending} />
-
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                disabled={isPending}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? (
-                  <>
-                    <LoaderCircle className="animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  "Create Incident"
-                )}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+        <SheetHeader className="gap-1">
+          <SheetTitle>Create New Incident</SheetTitle>
+          <SheetDescription>
+            Fill in the details below to create a new incident.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="flex-1 overflow-y-auto pb-2">{formContent}</div>
+      </SheetContent>
+    </Sheet>
   );
 };
 

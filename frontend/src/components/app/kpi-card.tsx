@@ -23,11 +23,19 @@ const KPIcard = ({
   };
 
   return (
-    <Card className="p-4">
-      <span className="font-semibold text-lg">{title}</span>
+    <Card className="p-3 sm:p-4">
+      <span className="font-semibold text-sm sm:text-base lg:text-lg">
+        {title}
+      </span>
       <div className="flex justify-between items-end">
-        <h2 className={`text-4xl font-bold ${getColour()} `}>{value}</h2>
-        <h1 className="text-[14px] font-medium">{subtitle}</h1>
+        <h2
+          className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${getColour()} `}
+        >
+          {value}
+        </h2>
+        <h1 className="text-[11px] sm:text-xs lg:text-[14px] font-medium">
+          {subtitle}
+        </h1>
       </div>
     </Card>
   );

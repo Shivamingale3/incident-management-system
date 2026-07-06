@@ -38,17 +38,17 @@ const IncidentsTable = ({
   };
 
   return (
-    <Card className="p-0! w-full flex-1 min-h-0 overflow-auto">
-      <Table className="[&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-card text-base">
+    <Card className="p-0! w-full lg:flex-1 lg:min-h-0 lg:overflow-auto">
+      <Table className="[&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-card text-sm sm:text-base">
         <TableHeader>
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell>Service</TableCell>
+            <TableCell className="hidden md:table-cell">Service</TableCell>
             <TableCell>Severity</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Assignee</TableCell>
-            <TableCell>Created At</TableCell>
+            <TableCell className="hidden md:table-cell">Assignee</TableCell>
+            <TableCell className="hidden sm:table-cell">Created At</TableCell>
           </TableRow>
         </TableHeader>
         <TableBody className="bg-background">{renderBody()}</TableBody>

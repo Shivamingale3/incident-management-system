@@ -19,16 +19,24 @@ const IncidentTableRow = ({ incident }: { incident: Incident }) => {
         onClick={() => setViewIncident(true)}
       >
         <TableCell>{incident.incidentId}</TableCell>
-        <TableCell>{incident.title}</TableCell>
-        <TableCell>{incident.service ?? "-"}</TableCell>
+        <TableCell>
+          <span className="block max-w-[180px] truncate sm:max-w-none">
+            {incident.title}
+          </span>
+        </TableCell>
+        <TableCell className="hidden md:table-cell">
+          {incident.service ?? "-"}
+        </TableCell>
         <TableCell>
           <SeverityBadge severity={incident.severity as IncidentSeverityType} />
         </TableCell>
         <TableCell>
           <StatusBadge status={incident.status as IncidentStatusType} />
         </TableCell>
-        <TableCell>{incident.assignee ?? "-"}</TableCell>
-        <TableCell>
+        <TableCell className="hidden md:table-cell">
+          {incident.assignee ?? "-"}
+        </TableCell>
+        <TableCell className="hidden sm:table-cell">
           {formatIncidentCreatedAtToLocale(incident.createdAt)}
         </TableCell>
       </TableRow>

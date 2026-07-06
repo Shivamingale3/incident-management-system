@@ -77,7 +77,7 @@ const PaginationBar = ({
 
   return (
     <div
-      className={`flex w-full items-center justify-between gap-4 text-sm transition-opacity duration-200 ${
+      className={`flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-3 text-xs sm:text-sm transition-opacity duration-200 ${
         isFetching ? "opacity-70" : "opacity-100"
       }`}
     >
@@ -92,11 +92,11 @@ const PaginationBar = ({
       </p>
 
       {/* Center: Page buttons */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 order-3 sm:order-2 w-full sm:w-auto justify-center">
         <Button
           variant="outline"
           size="icon"
-          className="size-8"
+          className="size-7 sm:size-8"
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1}
           aria-label="First page"
@@ -106,7 +106,7 @@ const PaginationBar = ({
         <Button
           variant="outline"
           size="icon"
-          className="size-8"
+          className="size-7 sm:size-8"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
           aria-label="Previous page"
@@ -127,7 +127,7 @@ const PaginationBar = ({
               key={page}
               variant={page === currentPage ? "default" : "outline"}
               size="icon"
-              className="size-8"
+              className="size-7 sm:size-8"
               onClick={() => onPageChange(page)}
               aria-label={`Page ${page}`}
               aria-current={page === currentPage ? "page" : undefined}
@@ -140,7 +140,7 @@ const PaginationBar = ({
         <Button
           variant="outline"
           size="icon"
-          className="size-8"
+          className="size-7 sm:size-8"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
           aria-label="Next page"
@@ -150,7 +150,7 @@ const PaginationBar = ({
         <Button
           variant="outline"
           size="icon"
-          className="size-8"
+          className="size-7 sm:size-8"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage >= totalPages}
           aria-label="Last page"
@@ -160,15 +160,15 @@ const PaginationBar = ({
       </div>
 
       {/* Right: Page size selector */}
-      <div className="flex items-center gap-2">
-        <span className="text-muted-foreground whitespace-nowrap">
+      <div className="flex items-center gap-2 order-2 sm:order-3">
+        <span className="text-muted-foreground whitespace-nowrap hidden sm:inline">
           Rows per page
         </span>
         <Select
           value={pageSize.toString()}
           onValueChange={(val) => onPageSizeChange(Number(val))}
         >
-          <SelectTrigger className="w-[70px] h-8">
+          <SelectTrigger className="w-[70px] h-8" aria-label="Rows per page">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

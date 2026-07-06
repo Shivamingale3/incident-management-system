@@ -31,8 +31,14 @@ const SelectAutoFetch = ({
         }
       }}
     >
-      <SelectTrigger className="w-max">
-        Auto-Refresh: <SelectValue placeholder="Auto-Refresh: OFF" />
+      <SelectTrigger className="w-max" aria-label="Auto-Refresh interval">
+        <span aria-hidden className="hidden sm:inline">
+          Auto-Refresh:&nbsp;
+        </span>
+        <span aria-hidden className="sm:hidden">
+          AR:&nbsp;
+        </span>
+        <SelectValue placeholder="Auto-Refresh: OFF" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="OFF">OFF</SelectItem>

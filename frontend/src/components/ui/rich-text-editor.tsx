@@ -16,6 +16,7 @@ import {
 import Placeholder from "@tiptap/extension-placeholder";
 
 import { cn } from "@/lib/utils";
+import { sanitizeHtml } from "@/lib/sanitize";
 import {
   BoldIcon,
   ItalicIcon,
@@ -144,11 +145,12 @@ function RichTextEditor({
   useEffect(() => {
     if (editor && !editor.isDestroyed) {
       const currentHtml = editor.getHTML();
-      if (currentHtml !== value && !isInternalChange.current) {
-        editor.commands.setContent(value, { emitUpdate: false });
+      const safeValue = readOnly ? sanitizeHtml(value) : value;
+      if (currentHtml !== safeValue && !isInternalChange.current) {
+        editor.commands.setContent(safeValue, { emitUpdate: false });
       }
     }
-  }, [editor, value]);
+  }, [editor, value, readOnly]);
 
   const isAtLimit = maxCharacters != null && charCount >= maxCharacters;
 

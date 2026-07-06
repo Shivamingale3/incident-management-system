@@ -48,7 +48,7 @@ export async function getIncidentAiInsightsController(
     const { incidentId } = req.params as { incidentId: string };
     const response = await aiService.getIncidentAiInsights(incidentId, controller.signal);
 
-    res.json(ApiResponse.success('Severity suggested successfully!', response));
+    res.json(ApiResponse.success('AI insights fetched successfully!', response));
   } catch (error) {
     next(error);
   }
@@ -73,7 +73,7 @@ export async function regenerateIncidentAiInsightsController(
       controller.signal,
     );
 
-    res.json(ApiResponse.success('Severity suggested successfully!', response));
+    res.json(ApiResponse.success('AI insights regenerated successfully!', response));
   } catch (error) {
     next(error);
   }

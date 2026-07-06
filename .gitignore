@@ -1,5 +1,4 @@
 node_modules
-*.md
 backend/dev.db
 
 # Environment

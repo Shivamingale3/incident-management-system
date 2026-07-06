@@ -80,7 +80,7 @@ export async function updateIncidentSeverityController(
   try {
     const { incidentId, severity } = request.params;
     await updateIncidentSeverity(incidentId as string, severity as IncidentSeverityType);
-    response.status(200).json(ApiResponse.success('Incident status updated successfully', null));
+    response.status(200).json(ApiResponse.success('Incident severity updated successfully', null));
   } catch (error) {
     next(error);
   }

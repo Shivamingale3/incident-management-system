@@ -15,11 +15,7 @@ export function errorHandler(
   }
 
   if (err instanceof HttpException) {
-    if (err.statusCode >= 500) {
-      logger.error(err.message);
-    } else {
-      logger.error(err.message);
-    }
+    logger.error(err.message);
 
     res.status(err.statusCode).json({
       success: false,
